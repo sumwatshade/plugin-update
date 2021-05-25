@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/sumwatshade/plugin-update/compare/v1.4.1...v1.5.0) (2021-05-25)
+
+
+### Features
+
+* tweak behavior ([a218149](https://github.com/sumwatshade/plugin-update/commit/a218149bf1cb935fcbac4cd326a9650f9b213fcf))
+
 ## [1.4.1](https://github.com/sumwatshade/plugin-update/compare/v1.4.0...v1.4.1) (2021-05-17)
 
 
