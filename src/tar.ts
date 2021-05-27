@@ -17,7 +17,7 @@ export async function extract(stream: NodeJS.ReadableStream, basename: string, o
       const crypto = require('crypto')
       let shaValidated = false
       let extracted = false
-      const check = () => shaValidated && extracted && resolve()
+      const check = () => shaValidated && extracted && resolve(true)
 
       if (sha) {
         const hasher = crypto.createHash('sha256')

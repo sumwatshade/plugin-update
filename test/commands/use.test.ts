@@ -1,20 +1,17 @@
-import UpdateCommand from '../../src/commands/update'
+import UseCommand from '../../src/commands/use'
 import * as fs from 'fs'
 import {mocked} from 'ts-jest/utils'
 import {IConfig} from '@oclif/config'
 
 const mockFs = mocked(fs, true)
+class MockedUseCommand extends UseCommand {
+  public fetchManifest = jest.fn()
 
-class MockedUpdateCommand extends UpdateCommand {
-  constructor(a: string[], v: IConfig) {
-    super(a, v)
-    this.fetchManifest = jest.fn()
-    this.downloadAndExtract = jest.fn()
-  }
+  public downloadAndExtract = jest.fn()
 }
 
-describe('Update Command', () => {
-  let commandInstance: MockedUpdateCommand
+describe('Use Command', () => {
+  let commandInstance: MockedUseCommand
   let config: IConfig
   beforeEach(() => {
     mockFs.existsSync.mockReturnValue(true)
@@ -39,11 +36,12 @@ describe('Update Command', () => {
   })
 
   it.skip('will run an update', async () => {
-    commandInstance = new MockedUpdateCommand([], config)
-
+    commandInstance = new MockedUseCommand([], config)
     await commandInstance.run()
   })
 
-  it.todo('Will update to the current channel when no options are provided')
-  it.todo('Will update to a new channel when provided in args')
+  it.todo('when provided a channel, uses the latest version available locally')
+  it.todo('when provided a version, will directly switch to it locally')
+  it.todo('will print a warning when the requested static version is not available locally')
+  it.todo('will print a warning when the requested channel is not available locally')
 })

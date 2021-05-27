@@ -8,6 +8,7 @@
     "rootDirs": [
       "./src"
     ],
+    "types": ["jest", "node", "execa"],
     "strict": true,
     "target": "es2017"
   },
