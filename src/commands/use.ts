@@ -41,10 +41,10 @@ export default class UseCommand extends UpdateCommand {
     const matchingLocalVersions = versions
     .filter(version => version.includes(targetVersion))
     .sort((a, b) => semver.compare(b, a))
+    const target = versions.includes(targetVersion) ? targetVersion : matchingLocalVersions[0]
 
     if (versions.includes(targetVersion) || matchingLocalVersions.length > 0) {
-      const target = versions.includes(targetVersion) ? targetVersion : matchingLocalVersions[0]
-      this.updateToExistingVersion(target)
+      await this.updateToExistingVersion(target)
       this.currentVersion = await this.determineCurrentVersion()
       this.updatedVersion = target
     } else if (channelUpdateRequested) {

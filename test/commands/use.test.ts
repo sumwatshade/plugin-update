@@ -7,6 +7,10 @@ import {IManifest} from '@oclif/dev-cli'
 jest.mock('fs-extra')
 const mockFs = mocked(fs, true)
 class MockedUseCommand extends UseCommand {
+  public channel!: string;
+
+  public clientRoot!: string;
+
   public currentVersion!: string;
 
   public updatedVersion!: string;
@@ -40,7 +44,9 @@ describe('Use Command', () => {
       pjson: {} as any,
       root: '',
       bin: 'cli',
+      scopedEnvVarKey: jest.fn(),
       scopedEnvVar: jest.fn(),
+
     } as any
   })
 
@@ -59,6 +65,7 @@ describe('Use Command', () => {
 
     await commandInstance.run()
 
+    expect(commandInstance.downloadAndExtract).not.toBeCalled()
     expect(commandInstance.updatedVersion).toBe('1.0.0-next.3')
   })
 
@@ -79,6 +86,7 @@ describe('Use Command', () => {
 
     await commandInstance.run()
 
+    expect(commandInstance.downloadAndExtract).not.toBeCalled()
     expect(commandInstance.updatedVersion).toBe('1.0.0-alpha.0')
   })
 
@@ -103,6 +111,7 @@ describe('Use Command', () => {
       err = error
     }
 
+    expect(commandInstance.downloadAndExtract).not.toBeCalled()
     expect(err.message).toBe('Requested version could not be found. Please try running `cli install 1.0.0-alpha.3`')
   })
 
@@ -127,6 +136,26 @@ describe('Use Command', () => {
       err = error
     }
 
+    expect(commandInstance.downloadAndExtract).not.toBeCalled()
     expect(err.message).toBe('Requested version could not be found. Please try running `cli install blah`')
+  })
+
+  it('when provided a channel, updates the channel even if local versions do not have channel', async () => {
+    mockFs.readdirSync.mockReturnValue([
+      '1.0.0-next.2',
+      '1.0.0-next.3',
+      '1.0.1',
+      '1.0.0-alpha.0',
+    ] as any)
+
+    // oclif-example use next
+    commandInstance = new MockedUseCommand(['beta'], config)
+
+    commandInstance.fetchManifest.mockResolvedValue({})
+
+    await commandInstance.run()
+
+    expect(commandInstance.downloadAndExtract).not.toBeCalled()
+    expect(commandInstance.channel).toBe('beta')
   })
 })
