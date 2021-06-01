@@ -66,6 +66,7 @@ describe('Use Command', () => {
 
     expect(commandInstance.downloadAndExtract).not.toBeCalled()
     expect(commandInstance.updatedVersion).toBe('1.0.0-next.3')
+    expect(commandInstance.channel).toBe('next')
   })
 
   it('when provided a version, will directly switch to it locally', async () => {
@@ -137,24 +138,5 @@ describe('Use Command', () => {
 
     expect(commandInstance.downloadAndExtract).not.toBeCalled()
     expect(err.message).toBe('Requested version could not be found. Please try running `cli install blah`')
-  })
-
-  it('when provided a channel, updates the channel even if local versions do not have channel', async () => {
-    mockFs.readdirSync.mockReturnValue([
-      '1.0.0-next.2',
-      '1.0.0-next.3',
-      '1.0.1',
-      '1.0.0-alpha.0',
-    ] as any)
-
-    // oclif-example use next
-    commandInstance = new MockedUseCommand(['beta'], config)
-
-    commandInstance.fetchManifest.mockResolvedValue({})
-
-    await commandInstance.run()
-
-    expect(commandInstance.downloadAndExtract).not.toBeCalled()
-    expect(commandInstance.channel).toBe('beta')
   })
 })

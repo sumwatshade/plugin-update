@@ -47,32 +47,9 @@ export default class UseCommand extends UpdateCommand {
       await this.updateToExistingVersion(target)
       this.currentVersion = await this.determineCurrentVersion()
       this.updatedVersion = target
-    } else if (channelUpdateRequested) {
-      // Begin prompt
-      cli.action.start(`${this.config.name}: Updating CLI`)
-
-      // Run pre-update hook
-      await this.config.runHook('preupdate', {channel: this.channel})
-      const manifest = await this.fetchManifest()
-
-      // Determine version differences
-      this.currentVersion = await this.determineCurrentVersion()
-      this.updatedVersion = (manifest as any).sha ?
-        `${manifest.version}-${(manifest as any).sha}` :
-        manifest.version
-
-      // Check if this update should be skipped
-      const reason = await this.skipUpdate()
-      if (reason) {
-        cli.action.stop(reason || 'done')
-      } else {
-        // Update using the new channel specification
-        await this.update(manifest, this.channel)
+      if (channelUpdateRequested) {
+        await this.setChannel()
       }
-
-      this.debug('tidy')
-      await this.tidy()
-      await this.config.runHook('update', {channel: this.channel})
     } else {
       throw new Error(
         `Requested version could not be found. Please try running \`${this.config.bin} install ${targetVersion}\``,
@@ -80,10 +57,6 @@ export default class UseCommand extends UpdateCommand {
     }
 
     this.log()
-    this.log(
-      `Updating to an already installed version will not update the channel. If autoupdate is enabled, the CLI will eventually be updated back to ${this.channel}.`,
-    )
-
     this.debug('done')
     cli.action.stop()
   }
