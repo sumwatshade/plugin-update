@@ -46,7 +46,6 @@ describe('Use Command', () => {
       bin: 'cli',
       scopedEnvVarKey: jest.fn(),
       scopedEnvVar: jest.fn(),
-
     } as any
   })
 
