@@ -68,9 +68,7 @@ export default class UpdateCommand extends Command {
       await this.config.runHook('preupdate', {channel: this.channel})
       const manifest = await this.fetchManifest()
       this.currentVersion = await this.determineCurrentVersion()
-
       this.updatedVersion = (manifest as any).sha ? `${manifest.version}-${(manifest as any).sha}` : manifest.version
-      this.debug(`Updating to ${this.updatedVersion}`)
       const reason = await this.skipUpdate()
       if (reason) cli.action.stop(reason || 'done')
       else await this.update(manifest)
@@ -128,6 +126,8 @@ export default class UpdateCommand extends Command {
   }
 
   protected async downloadAndExtract(output: string, manifest: IManifest, channel: string) {
+    const {version} = manifest
+
     const filesize = (n: number): string => {
       const [num, suffix] = require('filesize')(n, {output: 'array'})
       return num.toFixed(1) + ` ${suffix}`
@@ -232,7 +232,7 @@ export default class UpdateCommand extends Command {
     return this.config.version
   }
 
-  private s3ChannelManifestKey(bin: string, platform: string, arch: string, folder?: string): string {
+  protected s3ChannelManifestKey(bin: string, platform: string, arch: string, folder?: string): string {
     let s3SubDir = folder || ''
     if (s3SubDir !== '' && s3SubDir.slice(-1) !== '/') s3SubDir = `${s3SubDir}/`
     return path.join(s3SubDir, 'channels', this.channel, `${bin}-${platform}-${arch}-buildmanifest`)
