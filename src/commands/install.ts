@@ -17,8 +17,8 @@ export default class InstallCommand extends UpdateCommand {
       this.channel = channelUpdateRequested ? args.version : await this.determineChannel()
       const versions = fs
       .readdirSync(this.clientRoot)
-        .filter(dirOrFile => dirOrFile !== 'bin' && dirOrFile !== 'current')
-      
+      .filter(dirOrFile => dirOrFile !== 'bin' && dirOrFile !== 'current')
+
       const targetVersion = semver.clean(args.version) || args.version
 
       if (versions.includes(targetVersion)) {
@@ -33,7 +33,7 @@ export default class InstallCommand extends UpdateCommand {
         await this.config.runHook('preupdate', {channel: this.channel})
         const manifest = await this.fetchManifest()
         this.currentVersion = await this.determineCurrentVersion()
-  
+
         this.updatedVersion = (manifest as any).sha ? `${targetVersion}-${(manifest as any).sha}` : targetVersion
         this.debug(`Updating to ${this.updatedVersion}`)
         const reason = await this.skipUpdate()
@@ -42,11 +42,9 @@ export default class InstallCommand extends UpdateCommand {
         this.debug('tidy')
         await this.tidy()
         await this.config.runHook('update', {channel: this.channel})
-  
+
         this.debug('done')
         cli.action.stop()
       }
-
-
     }
 }
