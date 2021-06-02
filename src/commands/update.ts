@@ -41,19 +41,18 @@ export default class UpdateCommand extends Command {
 
     this.channel = args.channel || await this.determineChannel()
 
-    // Do not show known non-local version folder names, bin and current.
-    // const localVersions = fs.readdirSync(this.clientRoot).filter(dirOrFile => dirOrFile !== 'bin' && dirOrFile !== 'current')
-
     if (flags['from-local']) {
       await this.ensureClientDir()
       this.debug(`Looking for locally installed versions at ${this.clientRoot}`)
 
-      if (localVersions.length === 0) throw new Error('No locally installed versions found.')
+      // Do not show known non-local version folder names, bin and current.
+      const versions = fs.readdirSync(this.clientRoot).filter(dirOrFile => dirOrFile !== 'bin' && dirOrFile !== 'current')
+      if (versions.length === 0) throw new Error('No locally installed versions found.')
 
-      this.log(`Found versions: \n${localVersions.map(version => `     ${version}`).join('\n')}\n`)
+      this.log(`Found versions: \n${versions.map(version => `     ${version}`).join('\n')}\n`)
 
       const pinToVersion = await cli.prompt('Enter a version to update to')
-      if (!localVersions.includes(pinToVersion)) throw new Error(`Version ${pinToVersion} not found in the locally installed versions.`)
+      if (!versions.includes(pinToVersion)) throw new Error(`Version ${pinToVersion} not found in the locally installed versions.`)
 
       if (!await fs.pathExists(path.join(this.clientRoot, pinToVersion))) {
         throw new Error(`Version ${pinToVersion} is not already installed at ${this.clientRoot}.`)
@@ -65,18 +64,6 @@ export default class UpdateCommand extends Command {
       this.log()
       this.log(`Updating to an already installed version will not update the channel. If autoupdate is enabled, the CLI will eventually be updated back to ${this.channel}.`)
     } else {
-      let targetVersion
-      if (flags['switch-to']) {
-        targetVersion = semver.clean(flags['switch-to'])
-        this.debug(`Flag overriden target version: ${targetVersion}`)
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const [_, channel] = targetVersion?.split('-') || ['', '']
-        if (channel) {
-          this.channel = channel.substr(0, channel.indexOf('.'))
-        }
-        this.debug(`Flag overriden target channel: ${this.channel}`)
-      }
-
       cli.action.start(`${this.config.name}: Updating CLI`)
       await this.config.runHook('preupdate', {channel: this.channel})
       const manifest = await this.fetchManifest()
@@ -192,7 +179,6 @@ export default class UpdateCommand extends Command {
   protected async update(manifest: IManifest, channel = 'stable') {
     const {channel: manifestChannel} = manifest
     if (manifestChannel) channel = manifestChannel
-
     cli.action.start(`${this.config.name}: Updating CLI from ${color.green(this.currentVersion)} to ${color.green(this.updatedVersion)}${channel === 'stable' ? '' : ' (' + color.yellow(channel) + ')'}`)
 
     await this.ensureClientDir()
