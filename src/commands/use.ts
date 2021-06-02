@@ -50,9 +50,12 @@ export default class UseCommand extends UpdateCommand {
       if (channelUpdateRequested) {
         await this.setChannel()
       }
+      this.log(`Success! You are now on ${target}!`)
     } else {
+      const localVersionsMsg = `Locally installed versions available: \n${versions.map(version => `\t${version}`).join('\n')}\n`
+
       throw new Error(
-        `Requested version could not be found. Please try running \`${this.config.bin} install ${targetVersion}\``,
+        `Requested version could not be found locally. ${localVersionsMsg} If your requested version is not available locally, please try running \`${this.config.bin} install ${targetVersion}\``,
       )
     }
 

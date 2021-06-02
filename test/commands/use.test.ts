@@ -77,7 +77,7 @@ describe('Use Command', () => {
       '1.0.0-alpha.0',
     ] as any)
 
-    // oclif-example use next
+    // oclif-example use '1.0.0-alpha.0'
     commandInstance = new MockedUseCommand(['1.0.0-alpha.0'], config)
 
     commandInstance.fetchManifest.mockResolvedValue({
@@ -98,7 +98,7 @@ describe('Use Command', () => {
       '1.0.0-alpha.0',
     ] as any)
 
-    // oclif-example use next
+    // oclif-example use '1.0.0-alpha.3'
     commandInstance = new MockedUseCommand(['1.0.0-alpha.3'], config)
 
     commandInstance.fetchManifest.mockResolvedValue({})
@@ -111,8 +111,15 @@ describe('Use Command', () => {
       err = error
     }
 
+    const localVersionsMsg = `Locally installed versions available: \n${[
+      '1.0.0-next.2',
+      '1.0.0-next.3',
+      '1.0.1',
+      '1.0.0-alpha.0',
+    ].map(version => `\t${version}`).join('\n')}\n`
+
     expect(commandInstance.downloadAndExtract).not.toBeCalled()
-    expect(err.message).toBe('Requested version could not be found. Please try running `cli install 1.0.0-alpha.3`')
+    expect(err.message).toBe(`Requested version could not be found locally. ${localVersionsMsg} If your requested version is not available locally, please try running \`cli install 1.0.0-alpha.3\``)
   })
 
   it('will print a warning when the requested channel is not available locally', async () => {
@@ -123,8 +130,8 @@ describe('Use Command', () => {
       '1.0.0-alpha.0',
     ] as any)
 
-    // oclif-example use next
-    commandInstance = new MockedUseCommand(['blah'], config)
+    // oclif-example use test
+    commandInstance = new MockedUseCommand(['test'], config)
 
     commandInstance.fetchManifest.mockResolvedValue({})
 
@@ -136,7 +143,14 @@ describe('Use Command', () => {
       err = error
     }
 
+    const localVersionsMsg = `Locally installed versions available: \n${[
+      '1.0.0-next.2',
+      '1.0.0-next.3',
+      '1.0.1',
+      '1.0.0-alpha.0',
+    ].map(version => `\t${version}`).join('\n')}\n`
+
     expect(commandInstance.downloadAndExtract).not.toBeCalled()
-    expect(err.message).toBe('Requested version could not be found. Please try running `cli install blah`')
+    expect(err.message).toBe(`Requested version could not be found locally. ${localVersionsMsg} If your requested version is not available locally, please try running \`cli install test\``)
   })
 })
