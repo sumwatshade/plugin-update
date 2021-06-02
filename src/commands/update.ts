@@ -195,7 +195,6 @@ export default class UpdateCommand extends Command {
   }
 
   protected async updateToExistingVersion(version: string) {
-    await this.setChannel()
     await this.createBin(version)
     await this.touch()
   }
