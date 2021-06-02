@@ -1,3 +1,21 @@
+## [1.6.1](https://github.com/sumwatshade/plugin-update/compare/v1.6.0...v1.6.1) (2021-06-02)
+
+
+### Bug Fixes
+
+* build on ci ([b088955](https://github.com/sumwatshade/plugin-update/commit/b0889554d7614e0977926b40e432e501ef6a4af4))
+* update command revert ([2edd0a4](https://github.com/sumwatshade/plugin-update/commit/2edd0a4b6d8384a4269f75759281c92af83e5e92))
+
+
+### Reverts
+
+* Revert "feat(switching): allows cli to switch versions with param" ([e51fc48](https://github.com/sumwatshade/plugin-update/commit/e51fc4868b79e60f514f29d46d167432953d0760))
+* Revert "chore: pull versions back into local section" ([f3fbad3](https://github.com/sumwatshade/plugin-update/commit/f3fbad3e4f17582bec63fdb77ae01d19fb72fa04))
+* Revert "fix: ensure tarball is extracted correctly" ([d941769](https://github.com/sumwatshade/plugin-update/commit/d94176943ae84e2df624e98d32176ced4fe781be))
+* Revert "chore: clear yarn lockfile changes" ([f974883](https://github.com/sumwatshade/plugin-update/commit/f9748831c82a71fb21e2c50cf8f026bb9a37113d))
+* Revert "fix: preserve old behavior" ([d06de48](https://github.com/sumwatshade/plugin-update/commit/d06de4814d99ea225041b2c4f0c0169f3116e2f6))
+* Revert "chore: revert changes in from-local block" ([17aee35](https://github.com/sumwatshade/plugin-update/commit/17aee357871d73d49ff670ebf7fc97afca1815dd))
+
 # [1.6.0](https://github.com/sumwatshade/plugin-update/compare/v1.5.0...v1.6.0) (2021-06-02)
 
 
