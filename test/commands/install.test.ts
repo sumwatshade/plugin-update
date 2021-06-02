@@ -1,20 +1,18 @@
-import UpdateCommand from '../../src/commands/update'
+import InstallCommand from '../../src/commands/use'
 import * as fs from 'fs'
 import {mocked} from 'ts-jest/utils'
 import {IConfig} from '@oclif/config'
 
 const mockFs = mocked(fs, true)
 
-class MockedUpdateCommand extends UpdateCommand {
-  constructor(a: string[], v: IConfig) {
-    super(a, v)
-    this.fetchManifest = jest.fn()
-    this.downloadAndExtract = jest.fn()
-  }
+class MockedInstallCommand extends InstallCommand {
+  public fetchManifest = jest.fn()
+
+  public downloadAndExtract = jest.fn()
 }
 
-describe('Update Command', () => {
-  let commandInstance: MockedUpdateCommand
+describe('Install Command', () => {
+  let commandInstance: MockedInstallCommand
   let config: IConfig
   beforeEach(() => {
     mockFs.existsSync.mockReturnValue(true)
@@ -39,11 +37,13 @@ describe('Update Command', () => {
   })
 
   it.skip('will run an update', async () => {
-    commandInstance = new MockedUpdateCommand([], config)
+    commandInstance = new MockedInstallCommand([], config)
 
     await commandInstance.run()
   })
 
-  it.todo('Will update to the current channel when no options are provided')
-  it.todo('Will update to a new channel when provided in args')
+  it.todo('when requesting a channel, will fetch manifest to install the latest version')
+  it.todo('when requesting a version, will return the explicit version with appropriate URL')
+  it.todo('will handle an invalid version request')
+  it.todo('will handle an invalid channel request')
 })
