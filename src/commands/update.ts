@@ -68,12 +68,10 @@ export default class UpdateCommand extends Command {
       await this.config.runHook('preupdate', {channel: this.channel})
       const manifest = await this.fetchManifest()
       this.currentVersion = await this.determineCurrentVersion()
-
       this.updatedVersion = (manifest as any).sha ? `${manifest.version}-${(manifest as any).sha}` : manifest.version
-      this.debug(`Updating to ${this.updatedVersion}`)
       const reason = await this.skipUpdate()
       if (reason) cli.action.stop(reason || 'done')
-      else await this.update(manifest, this.channel)
+      else await this.update(manifest)
       this.debug('tidy')
       await this.tidy()
       await this.config.runHook('update', {channel: this.channel})
@@ -128,26 +126,27 @@ export default class UpdateCommand extends Command {
   }
 
   protected async downloadAndExtract(output: string, manifest: IManifest, channel: string) {
+    const {version} = manifest
+
     const filesize = (n: number): string => {
       const [num, suffix] = require('filesize')(n, {output: 'array'})
       return num.toFixed(1) + ` ${suffix}`
     }
 
     const http: typeof HTTP = require('http-call').HTTP
-    const gzUrl = !this.updatedVersion && manifest.gz ? manifest.gz : this.config.s3Url(this.config.s3Key('versioned', {
-      version: this.updatedVersion,
+    const gzUrl = manifest.gz || this.config.s3Url(this.config.s3Key('versioned', {
+      version,
       channel,
       bin: this.config.bin,
       platform: this.config.platform,
       arch: this.config.arch,
-      ext: this.updatedVersion ? '.tar.gz' : 'gz',
+      ext: 'gz',
     }))
-
     const {response: stream} = await http.stream(gzUrl)
     stream.pause()
 
     const baseDir = manifest.baseDir || this.config.s3Key('baseDir', {
-      version: this.updatedVersion,
+      version,
       channel,
       bin: this.config.bin,
       platform: this.config.platform,
@@ -180,7 +179,6 @@ export default class UpdateCommand extends Command {
   protected async update(manifest: IManifest, channel = 'stable') {
     const {channel: manifestChannel} = manifest
     if (manifestChannel) channel = manifestChannel
-
     cli.action.start(`${this.config.name}: Updating CLI from ${color.green(this.currentVersion)} to ${color.green(this.updatedVersion)}${channel === 'stable' ? '' : ' (' + color.yellow(channel) + ')'}`)
 
     await this.ensureClientDir()
@@ -234,7 +232,7 @@ export default class UpdateCommand extends Command {
     return this.config.version
   }
 
-  private s3ChannelManifestKey(bin: string, platform: string, arch: string, folder?: string): string {
+  protected s3ChannelManifestKey(bin: string, platform: string, arch: string, folder?: string): string {
     let s3SubDir = folder || ''
     if (s3SubDir !== '' && s3SubDir.slice(-1) !== '/') s3SubDir = `${s3SubDir}/`
     return path.join(s3SubDir, 'channels', this.channel, `${bin}-${platform}-${arch}-buildmanifest`)
@@ -389,4 +387,3 @@ ${binPathEnvVar}="\$DIR/${bin}" ${redirectedEnvVar}=1 "$DIR/../${version}/bin/${
     }
   }
 }
-
