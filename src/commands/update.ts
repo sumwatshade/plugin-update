@@ -65,6 +65,18 @@ export default class UpdateCommand extends Command {
       this.log()
       this.log(`Updating to an already installed version will not update the channel. If autoupdate is enabled, the CLI will eventually be updated back to ${this.channel}.`)
     } else {
+      let targetVersion
+      if (flags['switch-to']) {
+        targetVersion = semver.clean(flags['switch-to'])
+        this.debug(`Flag overriden target version: ${targetVersion}`)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const [_, channel] = targetVersion?.split('-') || ['', '']
+        if (channel) {
+          this.channel = channel.substr(0, channel.indexOf('.'))
+        }
+        this.debug(`Flag overriden target channel: ${this.channel}`)
+      }
+
       cli.action.start(`${this.config.name}: Updating CLI`)
       await this.config.runHook('preupdate', {channel: this.channel})
       const manifest = await this.fetchManifest()
@@ -141,7 +153,7 @@ export default class UpdateCommand extends Command {
       bin: this.config.bin,
       platform: this.config.platform,
       arch: this.config.arch,
-      ext: this.updatedVersion ? '.tar.gz' : 'gz',
+      ext: '.tar.gz',
     }))
 
     const {response: stream} = await http.stream(gzUrl)
