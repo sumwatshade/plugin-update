@@ -1,3 +1,18 @@
+# [1.6.0](https://github.com/sumwatshade/plugin-update/compare/v1.5.0...v1.6.0) (2021-06-02)
+
+
+### Bug Fixes
+
+* tdd for use command ([a527b31](https://github.com/sumwatshade/plugin-update/commit/a527b31f37c0cf75292658ec1f9802cc06e3ab69))
+* test downloadAndExtract ([b5919bb](https://github.com/sumwatshade/plugin-update/commit/b5919bbf4331608abcfbb593b300a20ee3e041ff))
+* test downloadAndExtract ([8a7ab05](https://github.com/sumwatshade/plugin-update/commit/8a7ab0533083ddec15eda17e69d89de9843a0a24))
+* update channel ([0597f6e](https://github.com/sumwatshade/plugin-update/commit/0597f6e453eb3bb417df5372775697da65da01d4))
+
+
+### Features
+
+* update use command ([598af92](https://github.com/sumwatshade/plugin-update/commit/598af9288080036fb29e0b658057f3824f6eb151))
+
 # [1.5.0](https://github.com/sumwatshade/plugin-update/compare/v1.4.1...v1.5.0) (2021-05-25)
 
 
