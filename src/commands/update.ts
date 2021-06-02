@@ -41,19 +41,19 @@ export default class UpdateCommand extends Command {
 
     this.channel = args.channel || await this.determineChannel()
 
-    if (flags['from-local']) {
-      // Do not show known non-local version folder names, bin and current.
-      const versions = fs.readdirSync(this.clientRoot).filter(dirOrFile => dirOrFile !== 'bin' && dirOrFile !== 'current')
+    // Do not show known non-local version folder names, bin and current.
+    // const localVersions = fs.readdirSync(this.clientRoot).filter(dirOrFile => dirOrFile !== 'bin' && dirOrFile !== 'current')
 
+    if (flags['from-local']) {
       await this.ensureClientDir()
       this.debug(`Looking for locally installed versions at ${this.clientRoot}`)
 
-      if (versions.length === 0) throw new Error('No locally installed versions found.')
+      if (localVersions.length === 0) throw new Error('No locally installed versions found.')
 
-      this.log(`Found versions: \n${versions.map(version => `     ${version}`).join('\n')}\n`)
+      this.log(`Found versions: \n${localVersions.map(version => `     ${version}`).join('\n')}\n`)
 
       const pinToVersion = await cli.prompt('Enter a version to update to')
-      if (!versions.includes(pinToVersion)) throw new Error(`Version ${pinToVersion} not found in the locally installed versions.`)
+      if (!localVersions.includes(pinToVersion)) throw new Error(`Version ${pinToVersion} not found in the locally installed versions.`)
 
       if (!await fs.pathExists(path.join(this.clientRoot, pinToVersion))) {
         throw new Error(`Version ${pinToVersion} is not already installed at ${this.clientRoot}.`)
