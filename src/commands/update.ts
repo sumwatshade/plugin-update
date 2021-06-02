@@ -86,7 +86,7 @@ export default class UpdateCommand extends Command {
       this.debug(`Updating to ${this.updatedVersion}`)
       const reason = await this.skipUpdate()
       if (reason) cli.action.stop(reason || 'done')
-      else await this.update(manifest, this.channel)
+      else await this.update(manifest)
       this.debug('tidy')
       await this.tidy()
       await this.config.runHook('update', {channel: this.channel})
@@ -147,20 +147,19 @@ export default class UpdateCommand extends Command {
     }
 
     const http: typeof HTTP = require('http-call').HTTP
-    const gzUrl = !this.updatedVersion && manifest.gz ? manifest.gz : this.config.s3Url(this.config.s3Key('versioned', {
-      version: this.updatedVersion,
+    const gzUrl = manifest.gz || this.config.s3Url(this.config.s3Key('versioned', {
+      version,
       channel,
       bin: this.config.bin,
       platform: this.config.platform,
       arch: this.config.arch,
-      ext: '.tar.gz',
+      ext: 'gz',
     }))
-
     const {response: stream} = await http.stream(gzUrl)
     stream.pause()
 
     const baseDir = manifest.baseDir || this.config.s3Key('baseDir', {
-      version: this.updatedVersion,
+      version,
       channel,
       bin: this.config.bin,
       platform: this.config.platform,
@@ -402,4 +401,3 @@ ${binPathEnvVar}="\$DIR/${bin}" ${redirectedEnvVar}=1 "$DIR/../${version}/bin/${
     }
   }
 }
-
