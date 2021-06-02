@@ -217,8 +217,8 @@ export default class UpdateCommand extends Command {
     this.debug(`Reading channel from ${channelPath}`)
     if (fs.existsSync(channelPath)) {
       const channel = await fs.readFile(channelPath, 'utf8')
-      this.debug(`Read channel from data: ${channel.toString()}`)
-      return channel.toString().trim()
+      this.debug(`Read channel from data: ${String(channel)}`)
+      return String(channel).trim()
     }
     return this.config.channel || 'stable'
   }

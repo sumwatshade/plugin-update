@@ -20,7 +20,7 @@ export default class UseCommand extends UpdateCommand {
       args.version :
       await this.determineChannel()
 
-    const targetVersion = semver.clean(args.version) || args.version
+    const targetVersion = semver.clean(args.version || '') || args.version
 
     // Determine if the version is from a different channel and update to account for it (ex. cli-example update 3.0.0-next.22 should update the channel to next as well.)
     const versionParts = targetVersion?.split('-') || ['', '']
