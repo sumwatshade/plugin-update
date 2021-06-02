@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/sumwatshade/plugin-update/compare/v1.7.0...v1.7.1) (2021-06-02)
+
+
+### Bug Fixes
+
+* propagate channel information ([d676bb8](https://github.com/sumwatshade/plugin-update/commit/d676bb8996bbe46315ae809a4c59009c26b8c393))
+
 # [1.7.0](https://github.com/sumwatshade/plugin-update/compare/v1.6.1...v1.7.0) (2021-06-02)
 
 
