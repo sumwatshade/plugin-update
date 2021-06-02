@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/sumwatshade/plugin-update/compare/v1.6.1...v1.7.0) (2021-06-02)
+
+
+### Features
+
+* add success msg and improved error msg ([a14001f](https://github.com/sumwatshade/plugin-update/commit/a14001fc4716e821be7c41925ac936e3882af482))
+
 ## [1.6.1](https://github.com/sumwatshade/plugin-update/compare/v1.6.0...v1.6.1) (2021-06-02)
 
 
