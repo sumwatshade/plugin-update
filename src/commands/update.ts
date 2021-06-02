@@ -176,7 +176,7 @@ export default class UpdateCommand extends Command {
     await extraction
   }
 
-  protected async update(manifest: IManifest, channel = 'stable') {
+  protected async update(manifest: IManifest, channel = this.channel) {
     const {channel: manifestChannel} = manifest
     if (manifestChannel) channel = manifestChannel
     cli.action.start(`${this.config.name}: Updating CLI from ${color.green(this.currentVersion)} to ${color.green(this.updatedVersion)}${channel === 'stable' ? '' : ' (' + color.yellow(channel) + ')'}`)
@@ -214,9 +214,11 @@ export default class UpdateCommand extends Command {
 
   protected async determineChannel(): Promise<string> {
     const channelPath = path.join(this.config.dataDir, 'channel')
+    this.debug(`Reading channel from ${channelPath}`)
     if (fs.existsSync(channelPath)) {
       const channel = await fs.readFile(channelPath, 'utf8')
-      return String(channel).trim()
+      this.debug(`Read channel from data: ${channel.toString()}`)
+      return channel.toString().trim()
     }
     return this.config.channel || 'stable'
   }
@@ -240,6 +242,7 @@ export default class UpdateCommand extends Command {
 
   protected async setChannel() {
     const channelPath = path.join(this.config.dataDir, 'channel')
+    this.debug(`Writing channel (${this.channel}) to ${channelPath}`)
     fs.writeFile(channelPath, this.channel, 'utf8')
   }
 
@@ -315,7 +318,8 @@ export default class UpdateCommand extends Command {
     cli.action.stop()
     return new Promise((_, reject) => {
       this.debug('restarting CLI after update', this.clientBin)
-      spawn(this.clientBin, ['update'], {
+      const commandArgs = ['update', this.channel ? this.channel : ''].filter(Boolean)
+      spawn(this.clientBin, commandArgs, {
         stdio: 'inherit',
         env: {...process.env, [this.config.scopedEnvVarKey('HIDE_UPDATED_MESSAGE')]: '1'},
       })
