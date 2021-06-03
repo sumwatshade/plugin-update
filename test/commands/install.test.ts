@@ -11,7 +11,7 @@ class MockedInstallCommand extends InstallCommand {
   public downloadAndExtract = jest.fn()
 }
 
-describe('Install Command', () => {
+describe.skip('Install Command', () => {
   let commandInstance: MockedInstallCommand
   let config: IConfig
   beforeEach(() => {

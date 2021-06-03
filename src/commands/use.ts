@@ -20,7 +20,7 @@ export default class UseCommand extends UpdateCommand {
       args.version :
       await this.determineChannel()
 
-    const targetVersion = semver.clean(args.version || '') || args.version
+    const targetVersion = semver.clean(args.version) || args.version
 
     // Determine if the version is from a different channel and update to account for it (ex. cli-example update 3.0.0-next.22 should update the channel to next as well.)
     const versionParts = targetVersion?.split('-') || ['', '']
@@ -42,7 +42,7 @@ export default class UseCommand extends UpdateCommand {
     .filter(version => version.includes(targetVersion))
     .sort((a, b) => semver.compare(b, a))
 
-    if (versions.includes(targetVersion) || matchingLocalVersions.length > 0) {
+    if (args.version && (versions.includes(targetVersion) || matchingLocalVersions.length > 0)) {
       const target = versions.includes(targetVersion) ? targetVersion : matchingLocalVersions[0]
       await this.updateToExistingVersion(target)
       this.currentVersion = await this.determineCurrentVersion()
@@ -55,7 +55,7 @@ export default class UseCommand extends UpdateCommand {
       const localVersionsMsg = `Locally installed versions available: \n${versions.map(version => `\t${version}`).join('\n')}\n`
 
       throw new Error(
-        `Requested version could not be found locally. ${localVersionsMsg} If your requested version is not available locally, please try running \`${this.config.bin} install ${targetVersion}\``,
+        `Requested version could not be found locally. ${localVersionsMsg}`,
       )
     }
 

@@ -119,7 +119,7 @@ describe('Use Command', () => {
     ].map(version => `\t${version}`).join('\n')}\n`
 
     expect(commandInstance.downloadAndExtract).not.toBeCalled()
-    expect(err.message).toBe(`Requested version could not be found locally. ${localVersionsMsg} If your requested version is not available locally, please try running \`cli install 1.0.0-alpha.3\``)
+    expect(err.message).toBe(`Requested version could not be found locally. ${localVersionsMsg}`)
   })
 
   it('will print a warning when the requested channel is not available locally', async () => {
@@ -151,6 +151,6 @@ describe('Use Command', () => {
     ].map(version => `\t${version}`).join('\n')}\n`
 
     expect(commandInstance.downloadAndExtract).not.toBeCalled()
-    expect(err.message).toBe(`Requested version could not be found locally. ${localVersionsMsg} If your requested version is not available locally, please try running \`cli install test\``)
+    expect(err.message).toBe(`Requested version could not be found locally. ${localVersionsMsg}`)
   })
 })
