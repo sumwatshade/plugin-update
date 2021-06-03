@@ -4,6 +4,8 @@ import * as semver from 'semver'
 
 import UpdateCommand from './update'
 
+const SEMVER_REGEX = /^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?/
+
 export default class UseCommand extends UpdateCommand {
   static args = [{name: 'version', optional: false}];
 
@@ -14,9 +16,17 @@ export default class UseCommand extends UpdateCommand {
 
     // Check if this command is trying to update the channel. TODO: make this dynamic
     const prereleaseChannels = ['alpha', 'beta', 'next']
+    const isExplicitVersion = SEMVER_REGEX.test(args.version || '')
     const channelUpdateRequested = ['stable', ...prereleaseChannels].some(
       c => args.version === c,
     )
+
+    if (!isExplicitVersion && !channelUpdateRequested) {
+      throw new Error(
+        `Invalid argument provided: ${args.version}. Please specify either a valid channel (alpha, beta, next, stable) or an explicit version (ex. 2.68.13)`,
+      )
+    }
+
     this.channel = channelUpdateRequested ?
       args.version :
       await this.determineChannel()
