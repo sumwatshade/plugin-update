@@ -1,3 +1,10 @@
+## [1.7.3](https://github.com/sumwatshade/plugin-update/compare/v1.7.2...v1.7.3) (2021-06-03)
+
+
+### Bug Fixes
+
+* strict prerelease channels ([3e4af7a](https://github.com/sumwatshade/plugin-update/commit/3e4af7abc48da7e44071b36ff2b8a8d12b50ad94))
+
 ## [1.7.2](https://github.com/sumwatshade/plugin-update/compare/v1.7.1...v1.7.2) (2021-06-03)
 
 
