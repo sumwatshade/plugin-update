@@ -13,7 +13,8 @@ export default class UseCommand extends UpdateCommand {
     const {args} = this.parse(UseCommand)
 
     // Check if this command is trying to update the channel. TODO: make this dynamic
-    const channelUpdateRequested = ['alpha', 'beta', 'next', 'stable'].some(
+    const prereleaseChannels = ['alpha', 'beta', 'next']
+    const channelUpdateRequested = ['stable', ...prereleaseChannels].some(
       c => args.version === c,
     )
     this.channel = channelUpdateRequested ?
@@ -39,7 +40,8 @@ export default class UseCommand extends UpdateCommand {
     if (versions.length === 0)
       throw new Error('No locally installed versions found.')
     const matchingLocalVersions = versions
-    .filter(version => version.includes(targetVersion))
+    // If we request stable, only provide standard versions
+    .filter(version => (this.channel === 'stable' &&  !prereleaseChannels.some(c => version.includes(c))) || (version.includes(targetVersion) && !version.includes('.partial')))
     .sort((a, b) => semver.compare(b, a))
 
     if (args.version && (versions.includes(targetVersion) || matchingLocalVersions.length > 0)) {
