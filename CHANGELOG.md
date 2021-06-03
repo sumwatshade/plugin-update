@@ -1,3 +1,12 @@
+## [1.7.2](https://github.com/sumwatshade/plugin-update/compare/v1.7.1...v1.7.2) (2021-06-03)
+
+
+### Bug Fixes
+
+* channel determination null checking ([a266120](https://github.com/sumwatshade/plugin-update/commit/a266120eddb46ab4c057507923cc36cead76b486))
+* remove install command ([6784f81](https://github.com/sumwatshade/plugin-update/commit/6784f81e0daa2138cab5c2ec979cd775051a3f3f))
+* stable resolution ([92c3493](https://github.com/sumwatshade/plugin-update/commit/92c3493ecb64c9f034440729917b332161d1dd93))
+
 ## [1.7.1](https://github.com/sumwatshade/plugin-update/compare/v1.7.0...v1.7.1) (2021-06-02)
 
 
