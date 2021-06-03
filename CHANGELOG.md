@@ -1,3 +1,10 @@
+## [1.7.4](https://github.com/sumwatshade/plugin-update/compare/v1.7.3...v1.7.4) (2021-06-03)
+
+
+### Bug Fixes
+
+* strip partials ([56383cf](https://github.com/sumwatshade/plugin-update/commit/56383cfaf85a731fc712e67fd33305a41d8ee153))
+
 ## [1.7.3](https://github.com/sumwatshade/plugin-update/compare/v1.7.2...v1.7.3) (2021-06-03)
 
 
