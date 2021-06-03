@@ -69,6 +69,27 @@ describe('Use Command', () => {
     expect(commandInstance.channel).toBe('next')
   })
 
+  it('when provided stable channel, uses only release versions', async () => {
+    mockFs.readdirSync.mockReturnValue([
+      '1.0.0-next.2',
+      '1.0.3',
+      '1.0.0-next.3',
+      '1.0.1',
+      '1.0.0-alpha.0',
+    ] as any)
+
+    // oclif-example use next
+    commandInstance = new MockedUseCommand(['stable'], config)
+
+    commandInstance.fetchManifest.mockResolvedValue({})
+
+    await commandInstance.run()
+
+    expect(commandInstance.downloadAndExtract).not.toBeCalled()
+    expect(commandInstance.updatedVersion).toBe('1.0.3')
+    expect(commandInstance.channel).toBe('stable')
+  })
+
   it('when provided a version, will directly switch to it locally', async () => {
     mockFs.readdirSync.mockReturnValue([
       '1.0.0-next.2',
@@ -119,7 +140,7 @@ describe('Use Command', () => {
     ].map(version => `\t${version}`).join('\n')}\n`
 
     expect(commandInstance.downloadAndExtract).not.toBeCalled()
-    expect(err.message).toBe(`Requested version could not be found locally. ${localVersionsMsg} If your requested version is not available locally, please try running \`cli install 1.0.0-alpha.3\``)
+    expect(err.message).toBe(`Requested version could not be found locally. ${localVersionsMsg}`)
   })
 
   it('will print a warning when the requested channel is not available locally', async () => {
@@ -151,6 +172,6 @@ describe('Use Command', () => {
     ].map(version => `\t${version}`).join('\n')}\n`
 
     expect(commandInstance.downloadAndExtract).not.toBeCalled()
-    expect(err.message).toBe(`Requested version could not be found locally. ${localVersionsMsg} If your requested version is not available locally, please try running \`cli install test\``)
+    expect(err.message).toBe(`Requested version could not be found locally. ${localVersionsMsg}`)
   })
 })

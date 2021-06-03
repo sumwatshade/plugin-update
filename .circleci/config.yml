@@ -15,6 +15,7 @@ jobs:
             - v3-yarn-{{checksum ".circleci/config.yml"}}
       - run: yarn
       - run: yarn build
+      - run: yarn test
   release:
     <<: *test
     steps:

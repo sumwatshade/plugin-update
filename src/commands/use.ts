@@ -13,7 +13,8 @@ export default class UseCommand extends UpdateCommand {
     const {args} = this.parse(UseCommand)
 
     // Check if this command is trying to update the channel. TODO: make this dynamic
-    const channelUpdateRequested = ['alpha', 'beta', 'next', 'stable'].some(
+    const prereleaseChannels = ['alpha', 'beta', 'next']
+    const channelUpdateRequested = ['stable', ...prereleaseChannels].some(
       c => args.version === c,
     )
     this.channel = channelUpdateRequested ?
@@ -39,10 +40,11 @@ export default class UseCommand extends UpdateCommand {
     if (versions.length === 0)
       throw new Error('No locally installed versions found.')
     const matchingLocalVersions = versions
-    .filter(version => version.includes(targetVersion))
+    // If we request stable, only provide standard versions
+    .filter(version => (this.channel === 'stable' &&  !prereleaseChannels.some(c => version.includes(c))) || (version.includes(targetVersion) && !version.includes('.partial')))
     .sort((a, b) => semver.compare(b, a))
 
-    if (versions.includes(targetVersion) || matchingLocalVersions.length > 0) {
+    if (args.version && (versions.includes(targetVersion) || matchingLocalVersions.length > 0)) {
       const target = versions.includes(targetVersion) ? targetVersion : matchingLocalVersions[0]
       await this.updateToExistingVersion(target)
       this.currentVersion = await this.determineCurrentVersion()
@@ -55,7 +57,7 @@ export default class UseCommand extends UpdateCommand {
       const localVersionsMsg = `Locally installed versions available: \n${versions.map(version => `\t${version}`).join('\n')}\n`
 
       throw new Error(
-        `Requested version could not be found locally. ${localVersionsMsg} If your requested version is not available locally, please try running \`${this.config.bin} install ${targetVersion}\``,
+        `Requested version could not be found locally. ${localVersionsMsg}`,
       )
     }
 
