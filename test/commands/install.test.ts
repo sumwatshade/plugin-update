@@ -90,14 +90,14 @@ describe('Install Command', () => {
 
   it('when requesting a version, will return the explicit version with appropriate URL', async () => {
     mockFs.readdirSync.mockReturnValue([] as any)
-    commandInstance = new MockedInstallCommand(['2.2.1'], config)
+    commandInstance = new MockedInstallCommand(['2.2.1-next.22'], config)
 
     http.get.mockResolvedValue({body: {
-      version: '2.2.1',
+      version: '2.2.1-next.22',
       baseDir: 'test-cli',
       channel: 'next',
-      gz: 'https://test-cli-oclif.s3.amazonaws.com/test-cli-v2.2.1/test-cli-v2.2.1.tar.gz',
-      xz: 'https://test-cli-oclif.s3.amazonaws.com/test-cli-v2.2.1/test-cli-v2.2.1.tar.xz',
+      gz: 'https://test-cli-oclif.s3.amazonaws.com/test-cli-v2.2.1-next.22/test-cli-v2.2.1-next.22.tar.gz',
+      xz: 'https://test-cli-oclif.s3.amazonaws.com/test-cli-v2.2.1-next.22/test-cli-v2.2.1-next.22.tar.xz',
       sha256gz: 'cae9de53d3cb9bfdb43b5fd75b1d9f4655e07cf479a8d86658155ff66d618dbb',
       node: {
         compatible: '>=10',
@@ -108,7 +108,7 @@ describe('Install Command', () => {
     await commandInstance.run()
 
     expect(commandInstance.downloadAndExtract).toBeCalled()
-    expect(commandInstance.updatedVersion).toBe('2.2.1')
+    expect(commandInstance.updatedVersion).toBe('2.2.1-next.22')
   })
 
   it('when requesting a version already available locally, will call updateToExistingVersion', async () => {

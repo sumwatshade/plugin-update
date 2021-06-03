@@ -154,44 +154,34 @@ export default class UpdateCommand extends Command {
     }
   }
 
-  protected async downloadAndExtract(
-    output: string,
-    manifest: IManifest,
-    channel: string,
-  ) {
-    const { version } = manifest;
+  protected async downloadAndExtract(output: string, manifest: IManifest, channel: string, targetVersion?: string) {
+    const {version} = manifest
 
     const filesize = (n: number): string => {
-      const [num, suffix] = require('filesize')(n, { output: 'array' });
-      return num.toFixed(1) + ` ${suffix}`;
-    };
+      const [num, suffix] = require('filesize')(n, {output: 'array'})
+      return num.toFixed(1) + ` ${suffix}`
+    }
 
-    const http: typeof HTTP = require('http-call').HTTP;
-    const gzUrl =
-      manifest.gz ||
-      this.config.s3Url(
-        this.config.s3Key('versioned', {
-          version,
-          channel,
-          bin: this.config.bin,
-          platform: this.config.platform,
-          arch: this.config.arch,
-          ext: 'gz',
-        }),
-      );
-    const { response: stream } = await http.stream(gzUrl);
-    stream.pause();
+    const http: typeof HTTP = require('http-call').HTTP
+    const gzUrl = !targetVersion && manifest.gz ? manifest.gz : this.config.s3Url(this.config.s3Key('versioned', {
+      version: targetVersion,
+      channel,
+      bin: this.config.bin,
+      platform: this.config.platform,
+      arch: this.config.arch,
+      ext: targetVersion ? 'tar.gz' : 'gz',
+    }))
+    const {response: stream} = await http.stream(gzUrl)
+    stream.pause()
 
-    const baseDir =
-      manifest.baseDir ||
-      this.config.s3Key('baseDir', {
-        version,
-        channel,
-        bin: this.config.bin,
-        platform: this.config.platform,
-        arch: this.config.arch,
-      });
-    const extraction = extract(stream, baseDir, output, manifest.sha256gz);
+    const baseDir = manifest.baseDir || this.config.s3Key('baseDir', {
+      version,
+      channel,
+      bin: this.config.bin,
+      platform: this.config.platform,
+      arch: this.config.arch,
+    })
+    const extraction = extract(stream, baseDir, output, manifest.sha256gz)
 
     // to-do: use cli.action.type
     if ((cli.action as any).frames) {
@@ -215,22 +205,16 @@ export default class UpdateCommand extends Command {
     await extraction;
   }
 
-  protected async update(manifest: IManifest, channel = this.channel) {
-    const { channel: manifestChannel } = manifest;
-    if (manifestChannel) channel = manifestChannel;
-    cli.action.start(
-      `${this.config.name}: Updating CLI from ${color.green(
-        this.currentVersion,
-      )} to ${color.green(this.updatedVersion)}${
-        channel === 'stable' ? '' : ' (' + color.yellow(channel) + ')'
-      }`,
-    );
+  protected async update(manifest: IManifest, channel = this.channel, targetVersion?: string) {
+    const {channel: manifestChannel} = manifest
+    if (manifestChannel) channel = manifestChannel
+    cli.action.start(`${this.config.name}: Updating CLI from ${color.green(this.currentVersion)} to ${color.green(this.updatedVersion)}${channel === 'stable' ? '' : ' (' + color.yellow(channel) + ')'}`)
 
-    await this.ensureClientDir();
-    const output = path.join(this.clientRoot, this.updatedVersion);
+    await this.ensureClientDir()
+    const output = path.join(this.clientRoot, this.updatedVersion)
 
-    if (!(await fs.pathExists(output))) {
-      await this.downloadAndExtract(output, manifest, channel);
+    if (!await fs.pathExists(output)) {
+      await this.downloadAndExtract(output, manifest, channel, targetVersion)
     }
 
     await this.setChannel();
