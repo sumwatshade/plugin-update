@@ -31,7 +31,7 @@ export default class UseCommand extends UpdateCommand {
       args.version :
       await this.determineChannel()
 
-    const targetVersion = semver.clean(args.version) || args.version
+    const targetVersion = semver.clean(args.version || '') || args.version
 
     // Determine if the version is from a different channel and update to account for it (ex. cli-example update 3.0.0-next.22 should update the channel to next as well.)
     const versionParts = targetVersion?.split('-') || ['', '']
@@ -50,8 +50,18 @@ export default class UseCommand extends UpdateCommand {
     if (versions.length === 0)
       throw new Error('No locally installed versions found.')
     const matchingLocalVersions = versions
-    // If we request stable, only provide standard versions
-    .filter(version => (this.channel === 'stable' &&  !prereleaseChannels.some(c => version.includes(c))) || (version.includes(targetVersion) && !version.includes('.partial')))
+    .filter(version => {
+      // - If the version contains 'partial', ignore it
+      if (version.includes('partial')) {
+        return false
+      }
+      // - If we request stable, only provide standard versions...
+      if (this.channel === 'stable') {
+        return !prereleaseChannels.some(c => version.includes(c))
+      }
+      // - ... otherwise check if the version is contained
+      return version.includes(targetVersion)
+    })
     .sort((a, b) => semver.compare(b, a))
 
     if (args.version && (versions.includes(targetVersion) || matchingLocalVersions.length > 0)) {
