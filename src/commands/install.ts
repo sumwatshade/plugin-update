@@ -4,6 +4,7 @@ import * as fs from 'fs-extra'
 
 import UpdateCommand from './update'
 
+const SEMVER_REGEX = /^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?/
 export default class InstallCommand extends UpdateCommand {
     static args = [{name: 'version', optional: false}]
 
@@ -14,10 +15,20 @@ export default class InstallCommand extends UpdateCommand {
 
       // Check if this command is trying to update the channel. TODO: make this dynamic
       const prereleaseChannels = ['alpha', 'beta', 'next']
+      const isExplicitVersion = SEMVER_REGEX.test(args.version || '')
       const channelUpdateRequested = ['stable', ...prereleaseChannels].some(
         c => args.version === c,
       )
-      this.channel = channelUpdateRequested ? args.version : await this.determineChannel()
+
+      if (!isExplicitVersion && !channelUpdateRequested) {
+        throw new Error(
+          `Invalid argument provided: ${args.version}. Please specify either a valid channel (alpha, beta, next, stable) or an explicit version (ex. 2.68.13)`,
+        )
+      }
+
+      this.channel = channelUpdateRequested ?
+        args.version :
+        await this.determineChannel()
 
       const targetVersion = semver.clean(args.version) || args.version
       // Determine if the version is from a different channel and update to account for it (ex. cli-example update 3.0.0-next.22 should update the channel to next as well.)
@@ -39,10 +50,7 @@ export default class InstallCommand extends UpdateCommand {
           await this.setChannel()
         }
       } else {
-        let specifiVersion
-        if (targetVersion !== this.channel) {
-          specifiVersion = targetVersion
-        }
+        const explicitVersion = isExplicitVersion ? targetVersion : null
         cli.action.start(`${this.config.name}: Updating CLI`)
         await this.config.runHook('preupdate', {channel: this.channel})
         const manifest = await this.fetchManifest()
@@ -52,7 +60,7 @@ export default class InstallCommand extends UpdateCommand {
         this.debug(`Updating to ${this.updatedVersion}`)
         const reason = await this.skipUpdate()
         if (reason) cli.action.stop(reason || 'done')
-        else await this.update(manifest, this.channel, specifiVersion)
+        else await this.update(manifest, this.channel, explicitVersion)
         this.debug('tidy')
         await this.tidy()
         await this.config.runHook('update', {channel: this.channel})
