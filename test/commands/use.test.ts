@@ -152,7 +152,7 @@ describe('Use Command', () => {
     ] as any)
 
     // oclif-example use test
-    commandInstance = new MockedUseCommand(['test'], config)
+    commandInstance = new MockedUseCommand(['beta'], config)
 
     commandInstance.fetchManifest.mockResolvedValue({})
 
@@ -173,5 +173,30 @@ describe('Use Command', () => {
 
     expect(commandInstance.downloadAndExtract).not.toBeCalled()
     expect(err.message).toBe(`Requested version could not be found locally. ${localVersionsMsg}`)
+  })
+
+  it('will throw an error when invalid channel is provided', async () => {
+    mockFs.readdirSync.mockReturnValue([
+      '1.0.0-next.2',
+      '1.0.0-next.3',
+      '1.0.1',
+      '1.0.0-alpha.0',
+    ] as any)
+
+    // oclif-example use test
+    commandInstance = new MockedUseCommand(['test'], config)
+
+    commandInstance.fetchManifest.mockResolvedValue({})
+
+    let err
+
+    try {
+      await commandInstance.run()
+    } catch (error) {
+      err = error
+    }
+
+    expect(commandInstance.downloadAndExtract).not.toBeCalled()
+    expect(err.message).toBe('Invalid argument provided: test. Please specify either a valid channel (alpha, beta, next, stable) or an explicit version (ex. 2.68.13)')
   })
 })
