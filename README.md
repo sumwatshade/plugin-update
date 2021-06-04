@@ -32,7 +32,7 @@ OPTIONS
   --from-local  interactively choose an already installed version
 ```
 
-_See code: [src/commands/update.ts](https://github.com/sumwatshade/plugin-update/blob/v1.7.4/src/commands/update.ts)_
+_See code: [src/commands/update.ts](https://github.com/sumwatshade/plugin-update/blob/v1.7.5/src/commands/update.ts)_
 
 ## `oclif-example use [VERSION]`
 
@@ -43,5 +43,5 @@ USAGE
   $ oclif-example use [VERSION]
 ```
 
-_See code: [src/commands/use.ts](https://github.com/sumwatshade/plugin-update/blob/v1.7.4/src/commands/use.ts)_
+_See code: [src/commands/use.ts](https://github.com/sumwatshade/plugin-update/blob/v1.7.5/src/commands/use.ts)_
 <!-- commandsstop -->

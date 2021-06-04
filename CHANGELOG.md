@@ -1,3 +1,15 @@
+## [1.7.5](https://github.com/sumwatshade/plugin-update/compare/v1.7.4...v1.7.5) (2021-06-04)
+
+
+### Bug Fixes
+
+* configuration changes ([8638fbd](https://github.com/sumwatshade/plugin-update/commit/8638fbd771842317e5d6b8a73af604bd691d0de4))
+* first pass formatting ([5d82adc](https://github.com/sumwatshade/plugin-update/commit/5d82adca2cff7fade36f7832e17fec6640eb11f8))
+* prettier ([142ef3e](https://github.com/sumwatshade/plugin-update/commit/142ef3ec0f9a1f7b24ae072b1b8cf35579877521))
+* respect prettier config in ide ([2382a3e](https://github.com/sumwatshade/plugin-update/commit/2382a3ef9906b5f3d5571992b5f4ec1babc8de28))
+* run lint on CI ([0e288a7](https://github.com/sumwatshade/plugin-update/commit/0e288a7dae5f0f463b2254df6828045e9149c743))
+* update formatting ([ab71f47](https://github.com/sumwatshade/plugin-update/commit/ab71f47117d0cea413480a1b0236e513e75ca6d1))
+
 ## [1.7.4](https://github.com/sumwatshade/plugin-update/compare/v1.7.3...v1.7.4) (2021-06-03)
 
 
