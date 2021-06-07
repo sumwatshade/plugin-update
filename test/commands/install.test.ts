@@ -1,10 +1,10 @@
-import InstallCommand from "../../src/commands/install";
-import * as fs from "fs-extra";
-import { mocked } from "ts-jest/utils";
-import { IConfig } from "@oclif/config";
+import InstallCommand from '../../src/commands/install';
+import * as fs from 'fs-extra';
+import { mocked } from 'ts-jest/utils';
+import { IConfig } from '@oclif/config';
 
-jest.mock("fs-extra");
-jest.mock("http-call", () => ({
+jest.mock('fs-extra');
+jest.mock('http-call', () => ({
   HTTP: {
     get: jest.fn(),
   },
@@ -31,32 +31,32 @@ class MockedInstallCommand extends InstallCommand {
   public updateToExistingVersion = jest.fn();
 }
 
-describe("Install Command", () => {
+describe('Install Command', () => {
   let commandInstance: MockedInstallCommand;
   let config: IConfig;
-  const { HTTP: http } = require("http-call");
+  const { HTTP: http } = require('http-call');
   beforeEach(() => {
     mockFs.existsSync.mockReturnValue(true);
 
     config = {
-      name: "test",
-      version: "1.0.0",
-      channel: "stable",
-      cacheDir: "",
-      commandIDs: [""],
+      name: 'test',
+      version: '1.0.0',
+      channel: 'stable',
+      cacheDir: '',
+      commandIDs: [''],
       runHook: jest.fn(),
       topics: [],
       valid: true,
-      arch: "arm64",
-      platform: "darwin",
+      arch: 'arm64',
+      platform: 'darwin',
       plugins: [],
       commands: [],
-      configDir: "",
-      dataDir: "",
-      root: "",
-      bin: "cli",
-      binPath: "cli",
-      pjson: { oclif: { update: { s3: "./folder" } } },
+      configDir: '',
+      dataDir: '',
+      root: '',
+      bin: 'cli',
+      binPath: 'cli',
+      pjson: { oclif: { update: { s3: './folder' } } },
       scopedEnvVar: jest.fn(),
       scopedEnvVarKey: jest.fn(),
       scopedEnvVarTrue: jest.fn(),
@@ -65,66 +65,66 @@ describe("Install Command", () => {
     } as any;
   });
 
-  it("when requesting a channel, will fetch manifest to install the latest version", async () => {
+  it('when requesting a channel, will fetch manifest to install the latest version', async () => {
     mockFs.readdirSync.mockReturnValue([] as any);
-    commandInstance = new MockedInstallCommand(["next"], config);
+    commandInstance = new MockedInstallCommand(['next'], config);
 
     http.get.mockResolvedValue({
       body: {
-        version: "1.0.0",
-        baseDir: "test-cli",
-        channel: "next",
-        gz: "https://test-cli-oclif.s3.amazonaws.com/test-cli-v1.0.0/test-cli-v1.0.0.tar.gz",
+        version: '1.0.0',
+        baseDir: 'test-cli',
+        channel: 'next',
+        gz: 'https://test-cli-oclif.s3.amazonaws.com/test-cli-v1.0.0/test-cli-v1.0.0.tar.gz',
       },
     });
 
     await commandInstance.run();
 
     expect(commandInstance.downloadAndExtract).toBeCalled();
-    expect(commandInstance.updatedVersion).toBe("next");
+    expect(commandInstance.updatedVersion).toBe('next');
   });
 
-  it("when requesting a version, will return the explicit version with appropriate URL", async () => {
+  it('when requesting a version, will return the explicit version with appropriate URL', async () => {
     mockFs.readdirSync.mockReturnValue([] as any);
-    commandInstance = new MockedInstallCommand(["2.2.1-next.22"], config);
+    commandInstance = new MockedInstallCommand(['2.2.1-next.22'], config);
 
     http.get.mockResolvedValue({
       body: {
-        version: "2.2.1-next.22",
-        baseDir: "test-cli",
-        channel: "next",
-        gz: "https://test-cli-oclif.s3.amazonaws.com/test-cli-v2.2.1-next.22/test-cli-v2.2.1-next.22.tar.gz",
+        version: '2.2.1-next.22',
+        baseDir: 'test-cli',
+        channel: 'next',
+        gz: 'https://test-cli-oclif.s3.amazonaws.com/test-cli-v2.2.1-next.22/test-cli-v2.2.1-next.22.tar.gz',
       },
     });
 
     await commandInstance.run();
 
     expect(commandInstance.downloadAndExtract).toBeCalled();
-    expect(commandInstance.updatedVersion).toBe("2.2.1-next.22");
+    expect(commandInstance.updatedVersion).toBe('2.2.1-next.22');
   });
 
-  it("when requesting a version already available locally, will call updateToExistingVersion", async () => {
+  it('when requesting a version already available locally, will call updateToExistingVersion', async () => {
     mockFs.readdirSync.mockReturnValue([
-      "1.0.0-next.2",
-      "1.0.0-next.3",
-      "1.0.1",
-      "1.0.0-alpha.0",
+      '1.0.0-next.2',
+      '1.0.0-next.3',
+      '1.0.1',
+      '1.0.0-alpha.0',
     ] as any);
-    commandInstance = new MockedInstallCommand(["1.0.0-next.3"], config);
+    commandInstance = new MockedInstallCommand(['1.0.0-next.3'], config);
     await commandInstance.run();
 
     expect(commandInstance.updateToExistingVersion).toBeCalled();
     expect(commandInstance.downloadAndExtract).not.toBeCalled();
-    expect(commandInstance.updatedVersion).toBe("1.0.0-next.3");
+    expect(commandInstance.updatedVersion).toBe('1.0.0-next.3');
   });
 
-  it("will handle an invalid version request", async () => {
+  it('will handle an invalid version request', async () => {
     mockFs.readdirSync.mockReturnValue([] as any);
-    commandInstance = new MockedInstallCommand(["2.2.1"], {
+    commandInstance = new MockedInstallCommand(['2.2.1'], {
       ...config,
       scopedEnvVarTrue: () => false,
     });
-    http.get.mockRejectedValue(new Error("unable to find version"));
+    http.get.mockRejectedValue(new Error('unable to find version'));
 
     let err;
 
@@ -134,12 +134,12 @@ describe("Install Command", () => {
       err = error;
     }
 
-    expect(err.message).toBe("unable to find version");
+    expect(err.message).toBe('unable to find version');
   });
 
-  it("will handle an invalid channel request", async () => {
+  it('will handle an invalid channel request', async () => {
     mockFs.readdirSync.mockReturnValue([] as any);
-    commandInstance = new MockedInstallCommand(["2.2.1"], {
+    commandInstance = new MockedInstallCommand(['2.2.1'], {
       ...config,
       scopedEnvVarTrue: () => true,
     });
@@ -155,6 +155,6 @@ describe("Install Command", () => {
     }
 
     expect(commandInstance.downloadAndExtract).not.toBeCalled();
-    expect(err.message).toBe("HTTP 403: Invalid channel undefined");
+    expect(err.message).toBe('HTTP 403: Invalid channel undefined');
   });
 });
