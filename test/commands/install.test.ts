@@ -40,11 +40,11 @@ describe('Install Command', () => {
   beforeEach(async () => {
     mockFs.existsSync.mockReturnValue(true);
     await config.load();
-    config.pjson.oclif.update.s3.host = 'https://test-cli-oclif.com/';
-    config.binPath = 'cli';
   });
 
   it('when requesting a channel, will fetch manifest to install the latest version', async () => {
+    config.pjson.oclif.update.s3.host = 'https://test-cli-oclif.com/';
+    config.binPath = 'cli';
     mockFs.readdirSync.mockReturnValue([] as any);
     commandInstance = new MockedInstallCommand(['next'], config);
 
@@ -64,6 +64,8 @@ describe('Install Command', () => {
   });
 
   it('when requesting a version, will return the explicit version with appropriate URL', async () => {
+    config.pjson.oclif.update.s3.host = 'https://test-cli-oclif.com/';
+    config.binPath = 'cli';
     mockFs.readdirSync.mockReturnValue([] as any);
     commandInstance = new MockedInstallCommand(['2.2.1-next.22'], config);
 
@@ -99,6 +101,7 @@ describe('Install Command', () => {
 
   // To do: find out why this one throws "You are trying to import a file after the Jest environment has been torn down" error
   it.skip('will handle an invalid version request', async () => {
+    config.pjson.oclif.update.s3.host = 'https://test-cli-oclif.com/';
     mockFs.readdirSync.mockReturnValue([] as any);
     commandInstance = new MockedInstallCommand(['2.2.1'], config);
 
@@ -115,6 +118,7 @@ describe('Install Command', () => {
   });
 
   it('will handle an invalid channel request', async () => {
+    config.pjson.oclif.update.s3.host = 'https://test-cli-oclif.com/';
     mockFs.readdirSync.mockReturnValue([] as any);
     commandInstance = new MockedInstallCommand(['test'], config);
     let err;
