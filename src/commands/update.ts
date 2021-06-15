@@ -158,6 +158,7 @@ export default class UpdateCommand extends Command {
     output: string,
     manifest: IManifest,
     channel: string,
+    targetVersion?: string,
   ) {
     const { version } = manifest;
 
@@ -168,17 +169,18 @@ export default class UpdateCommand extends Command {
 
     const http: typeof HTTP = require('http-call').HTTP;
     const gzUrl =
-      manifest.gz ||
-      this.config.s3Url(
-        this.config.s3Key('versioned', {
-          version,
-          channel,
-          bin: this.config.bin,
-          platform: this.config.platform,
-          arch: this.config.arch,
-          ext: 'gz',
-        }),
-      );
+      !targetVersion && manifest.gz
+        ? manifest.gz
+        : this.config.s3Url(
+            this.config.s3Key('versioned', {
+              version: targetVersion,
+              channel,
+              bin: this.config.bin,
+              platform: this.config.platform,
+              arch: this.config.arch,
+              ext: targetVersion ? 'tar.gz' : 'gz',
+            }),
+          );
     const { response: stream } = await http.stream(gzUrl);
     stream.pause();
 
@@ -215,7 +217,11 @@ export default class UpdateCommand extends Command {
     await extraction;
   }
 
-  protected async update(manifest: IManifest, channel = this.channel) {
+  protected async update(
+    manifest: IManifest,
+    channel = this.channel,
+    targetVersion?: string,
+  ) {
     const { channel: manifestChannel } = manifest;
     if (manifestChannel) channel = manifestChannel;
     cli.action.start(
@@ -230,7 +236,7 @@ export default class UpdateCommand extends Command {
     const output = path.join(this.clientRoot, this.updatedVersion);
 
     if (!(await fs.pathExists(output))) {
-      await this.downloadAndExtract(output, manifest, channel);
+      await this.downloadAndExtract(output, manifest, channel, targetVersion);
     }
 
     await this.setChannel();
