@@ -1,3 +1,21 @@
+# [1.8.0](https://github.com/sumwatshade/plugin-update/compare/v1.7.5...v1.8.0) (2021-06-15)
+
+
+### Bug Fixes
+
+* add explicit version check ([6a41c1a](https://github.com/sumwatshade/plugin-update/commit/6a41c1a65d5b39c919cc23c7dcc18212f53d483c))
+* errors ([6e0eb3d](https://github.com/sumwatshade/plugin-update/commit/6e0eb3dbfe487d8b2cfc5d97c6efd353c28c8181))
+* lint ([3be6770](https://github.com/sumwatshade/plugin-update/commit/3be6770c113e89e1b4ff3b282f68a7e5a7259137))
+* tests ([eea1b80](https://github.com/sumwatshade/plugin-update/commit/eea1b80a8644e2c229bc03f800f7b63fa5f47e11))
+* tests ([d0a8e3e](https://github.com/sumwatshade/plugin-update/commit/d0a8e3e587b4d2f6c1f6aa24019276589e939034))
+* use config ([01c6f9d](https://github.com/sumwatshade/plugin-update/commit/01c6f9d8705a4cd5bc7044c85a2f70f08d58c2ba))
+
+
+### Features
+
+* pass in specific version ([7bbb48e](https://github.com/sumwatshade/plugin-update/commit/7bbb48e942e7d5b3fdb351f42832acc242c9b1f6))
+* update install command ([6cecef6](https://github.com/sumwatshade/plugin-update/commit/6cecef6c7d870ec6c6aa7d215b5063b9dd9b8a0c))
+
 ## [1.7.5](https://github.com/sumwatshade/plugin-update/compare/v1.7.4...v1.7.5) (2021-06-04)
 
 
