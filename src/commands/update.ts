@@ -178,7 +178,7 @@ export default class UpdateCommand extends Command {
               bin: this.config.bin,
               platform: this.config.platform,
               arch: this.config.arch,
-              ext: targetVersion ? 'tar.gz' : 'gz',
+              ext: targetVersion ? '.tar.gz' : 'gz',
             }),
           );
     const { response: stream } = await http.stream(gzUrl);
