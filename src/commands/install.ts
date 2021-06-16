@@ -44,12 +44,17 @@ export default class InstallCommand extends UpdateCommand {
       .filter((dirOrFile) => dirOrFile !== 'bin' && dirOrFile !== 'current');
 
     if (versions.includes(targetVersion)) {
+      this.log(
+        `Found ${targetVersion} installed locally. Attempting to switch to ${targetVersion} now.`,
+      );
+
       await this.updateToExistingVersion(targetVersion);
       this.currentVersion = await this.determineCurrentVersion();
       this.updatedVersion = targetVersion;
       if (channelUpdateRequested) {
         await this.setChannel();
       }
+      this.log(`Success! You are now on ${targetVersion}!`);
     } else {
       const explicitVersion = isExplicitVersion ? targetVersion : null;
       cli.action.start(`${this.config.name}: Updating CLI`);
@@ -67,7 +72,9 @@ export default class InstallCommand extends UpdateCommand {
       this.debug('tidy');
       await this.tidy();
       await this.config.runHook('update', { channel: this.channel });
-
+      this.log(
+        `Success! Installed ${targetVersion}. You are now on ${targetVersion}!`,
+      );
       this.debug('done');
       cli.action.stop();
     }
