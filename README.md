@@ -30,7 +30,7 @@ USAGE
   $ oclif-example install [VERSION]
 ```
 
-_See code: [src/commands/install.ts](https://github.com/sumwatshade/plugin-update/blob/v1.8.0/src/commands/install.ts)_
+_See code: [src/commands/install.ts](https://github.com/sumwatshade/plugin-update/blob/v1.8.1/src/commands/install.ts)_
 
 ## `oclif-example update [CHANNEL]`
 
@@ -44,7 +44,7 @@ OPTIONS
   --from-local  interactively choose an already installed version
 ```
 
-_See code: [src/commands/update.ts](https://github.com/sumwatshade/plugin-update/blob/v1.8.0/src/commands/update.ts)_
+_See code: [src/commands/update.ts](https://github.com/sumwatshade/plugin-update/blob/v1.8.1/src/commands/update.ts)_
 
 ## `oclif-example use [VERSION]`
 
@@ -55,5 +55,5 @@ USAGE
   $ oclif-example use [VERSION]
 ```
 
-_See code: [src/commands/use.ts](https://github.com/sumwatshade/plugin-update/blob/v1.8.0/src/commands/use.ts)_
+_See code: [src/commands/use.ts](https://github.com/sumwatshade/plugin-update/blob/v1.8.1/src/commands/use.ts)_
 <!-- commandsstop -->

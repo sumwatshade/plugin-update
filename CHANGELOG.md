@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/sumwatshade/plugin-update/compare/v1.8.0...v1.8.1) (2021-06-16)
+
+
+### Bug Fixes
+
+* add success msg + fix tar ext ([e7c5729](https://github.com/sumwatshade/plugin-update/commit/e7c5729fe0fae1382b5f1894155d058c9518b644))
+
 # [1.8.0](https://github.com/sumwatshade/plugin-update/compare/v1.7.5...v1.8.0) (2021-06-15)
 
 
