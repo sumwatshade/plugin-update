@@ -1,3 +1,10 @@
+## [1.8.4](https://github.com/sumwatshade/plugin-update/compare/v1.8.3...v1.8.4) (2021-06-17)
+
+
+### Bug Fixes
+
+* no reexec on install ([f55aa79](https://github.com/sumwatshade/plugin-update/commit/f55aa795905f89eacc2579556b8cdb196bdc6aa0))
+
 ## [1.8.3](https://github.com/sumwatshade/plugin-update/compare/v1.8.2...v1.8.3) (2021-06-17)
 
 
