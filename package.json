@@ -1,6 +1,6 @@
 {
   "name": "@sumwatshade/oclif-plugin-update",
-  "version": "1.8.2",
+  "version": "1.8.3",
   "author": "Lucas Shadler @sumwatshade",
   "bugs": "https://github.com/sumwatshade/plugin-update/issues",
   "dependencies": {
