@@ -1,3 +1,12 @@
+## [1.8.3](https://github.com/sumwatshade/plugin-update/compare/v1.8.2...v1.8.3) (2021-06-17)
+
+
+### Bug Fixes
+
+* check if channelUpdateRequested is req ([4685a72](https://github.com/sumwatshade/plugin-update/commit/4685a72dfa8a7b37075a727990fe53d2ada8cd44))
+* remove sha when extracting target version ([67dfe55](https://github.com/sumwatshade/plugin-update/commit/67dfe553a4a728a6d9d988aa69c94ae7b321afcf))
+* update comment ([2f8dc5c](https://github.com/sumwatshade/plugin-update/commit/2f8dc5cbb0b91b18a84d05eab50bb42631a9414a))
+
 ## [1.8.2](https://github.com/sumwatshade/plugin-update/compare/v1.8.1...v1.8.2) (2021-06-17)
 
 
