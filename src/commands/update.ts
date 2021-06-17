@@ -149,7 +149,9 @@ export default class UpdateCommand extends Command {
       return body;
     } catch (error) {
       if (error.statusCode === 403)
-        throw new Error(`HTTP 403: Invalid channel ${this.channel}`);
+        throw new Error(
+          `HTTP 403: This could mean that you are being restricted from accessing this version, or that you are providing an invalid channel (${this.channel})`,
+        );
       throw error;
     }
   }
@@ -226,6 +228,7 @@ export default class UpdateCommand extends Command {
     manifest: IManifest,
     channel = this.channel,
     targetVersion?: string,
+    reexec = true,
   ) {
     const { channel: manifestChannel } = manifest;
     if (manifestChannel) channel = manifestChannel;
@@ -247,7 +250,9 @@ export default class UpdateCommand extends Command {
     await this.setChannel();
     await this.createBin(this.updatedVersion);
     await this.touch();
-    await this.reexec();
+    if (reexec) {
+      await this.reexec();
+    }
   }
 
   protected async updateToExistingVersion(version: string) {
