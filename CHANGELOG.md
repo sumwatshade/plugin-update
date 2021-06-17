@@ -1,3 +1,10 @@
+## [1.8.2](https://github.com/sumwatshade/plugin-update/compare/v1.8.1...v1.8.2) (2021-06-17)
+
+
+### Bug Fixes
+
+* udpate channel to stable if version request is not a diff channel ([5314226](https://github.com/sumwatshade/plugin-update/commit/531422650d2d7a3aa5dc0ecbcd2d97c6837badc3))
+
 ## [1.8.1](https://github.com/sumwatshade/plugin-update/compare/v1.8.0...v1.8.1) (2021-06-16)
 
 
