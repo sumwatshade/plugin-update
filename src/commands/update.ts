@@ -193,7 +193,12 @@ export default class UpdateCommand extends Command {
         platform: this.config.platform,
         arch: this.config.arch,
       });
-    const extraction = extract(stream, baseDir, output, manifest.sha256gz);
+    const extraction = extract(
+      stream,
+      baseDir,
+      output,
+      !targetVersion && manifest.sha256gz ? manifest.sha256gz : undefined,
+    );
 
     // to-do: use cli.action.type
     if ((cli.action as any).frames) {
