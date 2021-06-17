@@ -74,7 +74,7 @@ describe('Install Command', () => {
         version: '2.2.1-next.22',
         baseDir: 'test-cli',
         channel: 'next',
-        gz: 'https://test-cli-oclif.s3.amazonaws.com/test-cli-v2.2.1-next.22/test-cli-v2.2.1-next.22.tar.gz',
+        gz: 'https://test-cli-oclif.s3.amazonaws.com/channels/next/test-cli-v2.2.1-next.22/test-cli-v2.2.1-next.22.tar.gz',
       },
     });
 
@@ -82,6 +82,29 @@ describe('Install Command', () => {
 
     expect(commandInstance.downloadAndExtract).toBeCalled();
     expect(commandInstance.updatedVersion).toBe('2.2.1-next.22');
+  });
+
+  it('when requesting a version from stable, will update channel to stable and return the explicit version with appropriate URL', async () => {
+    config.pjson.oclif.update.s3.host = 'https://test-cli-oclif.com/';
+    config.binPath = 'cli';
+    config.channel = 'next';
+    mockFs.readdirSync.mockReturnValue([] as any);
+    commandInstance = new MockedInstallCommand(['2.2.1'], config);
+
+    http.get.mockResolvedValue({
+      body: {
+        version: '2.2.1',
+        baseDir: 'test-cli',
+        channel: 'stable',
+        gz: 'https://test-cli-oclif.s3.amazonaws.com/test-cli-v2.2.1/test-cli-v2.2.1.tar.gz',
+      },
+    });
+
+    await commandInstance.run();
+
+    expect(commandInstance.downloadAndExtract).toBeCalled();
+    expect(commandInstance.channel).toBe('stable');
+    expect(commandInstance.updatedVersion).toBe('2.2.1');
   });
 
   it('when requesting a version already available locally, will call updateToExistingVersion', async () => {
