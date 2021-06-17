@@ -71,7 +71,7 @@ export default class InstallCommand extends UpdateCommand {
       this.debug(`Updating to ${this.updatedVersion}`);
       const reason = await this.skipUpdate();
       if (reason) cli.action.stop(reason || 'done');
-      else await this.update(manifest, this.channel, explicitVersion);
+      else await this.update(manifest, this.channel, explicitVersion, false);
       this.debug('tidy');
       await this.tidy();
       await this.config.runHook('update', { channel: this.channel });
