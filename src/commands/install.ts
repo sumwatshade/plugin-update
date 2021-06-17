@@ -38,7 +38,7 @@ export default class InstallCommand extends UpdateCommand {
       this.channel = versionParts[1].substr(0, versionParts[1].indexOf('.'));
       this.debug(`Flag overriden target channel: ${this.channel}`);
     } else if (versionParts.length === 1 && !channelUpdateRequested) {
-      // If there is only one version part then the channel must be stable
+      // If there is only one version part and !channelUpdateRequested then the channel must be stable
       this.channel = 'stable';
     }
 
