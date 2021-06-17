@@ -7,9 +7,9 @@ import UpdateCommand from './update';
 const SEMVER_REGEX =
   /^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?/;
 
-const STRIP_SHA_REGEX = /(\d+)\.(\d+)\.(\d+)(\-\w+\.\d+)?/;
+const STRIP_SHA_REGEX = /(\d+)\.(\d+)\.(\d+)(-\w+\.\d+)?/;
 
-const generateList = (items) => items.map((i) => `\t${i}`).join('\n');
+const generateList = (items: string[]) => items.map((i) => `\t${i}`).join('\n');
 
 const PRERELEASE_CHANNELS = ['alpha', 'beta', 'next'];
 export default class UseCommand extends UpdateCommand {
