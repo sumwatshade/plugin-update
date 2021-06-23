@@ -15,7 +15,7 @@ export default class InstallCommand extends UpdateCommand {
       name: 'version',
       description:
         'Specify an explicit version (ex. 3.0.0-next.1) or a channel (ex. alpha)',
-      optional: false,
+      required: true,
     },
   ];
 
