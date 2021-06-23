@@ -8,7 +8,17 @@ const SEMVER_REGEX =
   /^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?/;
 
 export default class UseCommand extends UpdateCommand {
-  static args = [{ name: 'version', optional: false }];
+  static description =
+    'Checks for a previously installed version of the <%= config.bin %> CLI. Throws an error if the version is not found.';
+
+  static args = [
+    {
+      name: 'version',
+      description:
+        'Specify an explicit version (ex. 3.0.0-next.1) or a channel (ex. alpha)',
+      optional: true,
+    },
+  ];
 
   static flags = {};
 
