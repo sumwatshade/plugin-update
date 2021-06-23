@@ -1,3 +1,10 @@
+## [1.8.5](https://github.com/sumwatshade/plugin-update/compare/v1.8.4...v1.8.5) (2021-06-23)
+
+
+### Bug Fixes
+
+* add docs for each command ([1066934](https://github.com/sumwatshade/plugin-update/commit/1066934dd31bb0eb2e4371a557184e5f5054bd9d))
+
 ## [1.8.4](https://github.com/sumwatshade/plugin-update/compare/v1.8.3...v1.8.4) (2021-06-17)
 
 

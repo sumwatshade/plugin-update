@@ -10,50 +10,58 @@
 [![License](https://img.shields.io/npm/l/@oclif/plugin-update.svg)](https://github.com/sumwatshade/plugin-update/blob/master/package.json)
 
 <!-- toc -->
-* [Usage](#usage)
-* [Commands](#commands)
+* [@sumwatshade/oclif-plugin-update](#sumwatshadeoclif-plugin-update)
 <!-- tocstop -->
 
 ## Commands
 
 <!-- commands -->
-* [`oclif-example install [VERSION]`](#oclif-example-install-version)
+* [`oclif-example install VERSION`](#oclif-example-install-version)
 * [`oclif-example update [CHANNEL]`](#oclif-example-update-channel)
 * [`oclif-example use [VERSION]`](#oclif-example-use-version)
 
-## `oclif-example install [VERSION]`
+## `oclif-example install VERSION`
 
-update the oclif-example CLI
+Install and link a new version of the oclif-example CLI. This will first check locally before fetching from the internet
 
 ```
 USAGE
-  $ oclif-example install [VERSION]
+  $ oclif-example install VERSION
+
+ARGUMENTS
+  VERSION  Specify an explicit version (ex. 3.0.0-next.1) or a channel (ex. alpha)
 ```
 
-_See code: [src/commands/install.ts](https://github.com/sumwatshade/plugin-update/blob/v1.8.4/src/commands/install.ts)_
+_See code: [src/commands/install.ts](https://github.com/sumwatshade/plugin-update/blob/v1.8.5/src/commands/install.ts)_
 
 ## `oclif-example update [CHANNEL]`
 
-update the oclif-example CLI
+update the oclif-example CLI. This will download a new binary
 
 ```
 USAGE
   $ oclif-example update [CHANNEL]
 
+ARGUMENTS
+  CHANNEL  Specify a prerelease channel. An error will be thrown if this channel is invalid.
+
 OPTIONS
   --from-local  interactively choose an already installed version
 ```
 
-_See code: [src/commands/update.ts](https://github.com/sumwatshade/plugin-update/blob/v1.8.4/src/commands/update.ts)_
+_See code: [src/commands/update.ts](https://github.com/sumwatshade/plugin-update/blob/v1.8.5/src/commands/update.ts)_
 
 ## `oclif-example use [VERSION]`
 
-update the oclif-example CLI
+Checks for a previously installed version of the oclif-example CLI. Throws an error if the version is not found.
 
 ```
 USAGE
   $ oclif-example use [VERSION]
+
+ARGUMENTS
+  VERSION  Specify an explicit version (ex. 3.0.0-next.1) or a channel (ex. alpha)
 ```
 
-_See code: [src/commands/use.ts](https://github.com/sumwatshade/plugin-update/blob/v1.8.4/src/commands/use.ts)_
+_See code: [src/commands/use.ts](https://github.com/sumwatshade/plugin-update/blob/v1.8.5/src/commands/use.ts)_
 <!-- commandsstop -->
