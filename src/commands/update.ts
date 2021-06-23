@@ -12,9 +12,17 @@ import { extract } from '../tar';
 import { ls, wait } from '../util';
 
 export default class UpdateCommand extends Command {
-  static description = 'update the <%= config.bin %> CLI';
+  static description =
+    'update the <%= config.bin %> CLI. This will download a new binary';
 
-  static args = [{ name: 'channel', optional: true }];
+  static args = [
+    {
+      name: 'channel', // name of arg to show in help and reference with args[name]
+      required: false, // make the arg required with `required: true`
+      description:
+        'Specify a prerelease channel. An error will be thrown if this channel is invalid.', // help description
+    },
+  ];
 
   static flags: flags.Input<any> = {
     autoupdate: flags.boolean({ hidden: true }),

@@ -1,7 +1,8 @@
-@sumwatshade/oclif-plugin-update
+# @sumwatshade/oclif-plugin-update
+
 ====================
 
-> A fork of @oclif/plugin-update that modifies the functionality
+> A fork of @oclif/plugin-update that closer mimics [NVM](https://github.com/nvm-sh/nvm)
 
 [![Version](https://img.shields.io/npm/v/@oclif/plugin-update.svg)](https://npmjs.org/package/@sumwatshade/oclif-plugin-update)
 [![CircleCI](https://circleci.com/gh/oclif/plugin-update/tree/master.svg?style=shield)](https://circleci.com/gh/sumwatshade/plugin-update/tree/master)
@@ -12,10 +13,9 @@
 * [Usage](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
-# Usage
-See https://oclif.io/docs/releasing.html#autoupdater
 
-# Commands
+## Commands
+
 <!-- commands -->
 * [`oclif-example install [VERSION]`](#oclif-example-install-version)
 * [`oclif-example update [CHANNEL]`](#oclif-example-update-channel)

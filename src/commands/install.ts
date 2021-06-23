@@ -7,7 +7,17 @@ import UpdateCommand from './update';
 const SEMVER_REGEX =
   /^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?/;
 export default class InstallCommand extends UpdateCommand {
-  static args = [{ name: 'version', optional: false }];
+  static description =
+    'Install and link a new version of the <%= config.bin %> CLI. This will first check locally before fetching from the internet';
+
+  static args = [
+    {
+      name: 'version',
+      description:
+        'Specify an explicit version (ex. 3.0.0-next.1) or a channel (ex. alpha)',
+      required: true,
+    },
+  ];
 
   static flags = {};
 
