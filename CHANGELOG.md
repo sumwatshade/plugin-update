@@ -1,3 +1,11 @@
+## [1.8.6](https://github.com/sumwatshade/plugin-update/compare/v1.8.5...v1.8.6) (2021-06-24)
+
+
+### Bug Fixes
+
+* extract symlinks from node modules ([52fc421](https://github.com/sumwatshade/plugin-update/commit/52fc4212fda8475bc1b0141720514af7dcc373f3))
+* symlink resolution for older builds ([fbd48df](https://github.com/sumwatshade/plugin-update/commit/fbd48dff5ff6be52b1df7bb1858855d2205f88b5))
+
 ## [1.8.5](https://github.com/sumwatshade/plugin-update/compare/v1.8.4...v1.8.5) (2021-06-23)
 
 
