@@ -41,14 +41,15 @@ export async function extract(
         });
       } else shaValidated = true;
 
-      const ignore = (_: any, header: any) => {
+      const ignore = (name: string, header: any) => {
         switch (header.type) {
           case 'directory':
           case 'file':
             if (process.env.OCLIF_DEBUG_UPDATE_FILES) debug(header.name);
             return false;
           case 'symlink':
-            return true;
+            // If the binary is within node_modules/.bin, then we want to hold that symlink
+            return name.indexOf('node_modules/.bin') === -1;
           default:
             throw new Error(header.type);
         }
