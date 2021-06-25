@@ -257,4 +257,44 @@ describe('Use Command', () => {
       'Invalid argument provided: test. Please specify either a valid channel (alpha, beta, next, stable) or an explicit version (ex. 2.68.13)',
     );
   });
+
+  it('will throw an error with displayed versions when no argument is provided', async () => {
+    mockFs.readdirSync.mockReturnValue([
+      '1.0.0-next.2',
+      '1.0.0-next.3.testing',
+      '1.0.1',
+      '1.0.0-alpha.3.12345',
+      '1.0.0-alpha.0.partial',
+      '1.0.0-alpha.0',
+    ] as any);
+
+    // oclif-example use test
+    commandInstance = new MockedUseCommand([], config);
+
+    commandInstance.fetchManifest.mockResolvedValue({});
+
+    let err;
+
+    try {
+      await commandInstance.run();
+    } catch (error) {
+      err = error;
+    }
+    const localVersionsMsg = `No version or channel was specified. Please choose from the following:\n${[
+      'stable',
+      'alpha',
+      'beta',
+      'next',
+      '1.0.0-next.2',
+      '1.0.0-next.3',
+      '1.0.1',
+      '1.0.0-alpha.3',
+      '1.0.0-alpha.0',
+    ]
+      .map((version) => `\t${version}`)
+      .join('\n')}`;
+
+    expect(commandInstance.downloadAndExtract).not.toBeCalled();
+    expect(err.message).toBe(localVersionsMsg);
+  });
 });

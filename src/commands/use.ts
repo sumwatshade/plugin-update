@@ -7,6 +7,11 @@ import UpdateCommand from './update';
 const SEMVER_REGEX =
   /^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?/;
 
+const STRIP_SHA_REGEX = /(\d+)\.(\d+)\.(\d+)(-\w+\.\d+)?/;
+
+const generateList = (items: string[]) => items.map((i) => `\t${i}`).join('\n');
+
+const PRERELEASE_CHANNELS = ['alpha', 'beta', 'next'];
 export default class UseCommand extends UpdateCommand {
   static description =
     'Checks for a previously installed version of the <%= config.bin %> CLI. Throws an error if the version is not found.';
@@ -25,10 +30,31 @@ export default class UseCommand extends UpdateCommand {
   async run() {
     const { args } = this.parse(UseCommand);
 
+    // Do not show known non-local version folder names, bin and current.
+    const versions = fs
+      .readdirSync(this.clientRoot)
+      .filter((dirOrFile) => dirOrFile !== 'bin' && dirOrFile !== 'current');
+    if (versions.length === 0) {
+      throw new Error('No locally installed versions found.');
+    }
+
+    if (!args.version) {
+      throw new Error(
+        `No version or channel was specified. Please choose from the following:\n${generateList(
+          ['stable', ...PRERELEASE_CHANNELS, ...versions]
+            .filter((v) => v.indexOf('partial') < 0)
+            .map((v) => {
+              const stripRegexMatch = v.match(STRIP_SHA_REGEX);
+              return (stripRegexMatch && stripRegexMatch[0]) || v;
+            }),
+        )}`,
+      );
+    }
+
     // Check if this command is trying to update the channel. TODO: make this dynamic
-    const prereleaseChannels = ['alpha', 'beta', 'next'];
+
     const isExplicitVersion = SEMVER_REGEX.test(args.version || '');
-    const channelUpdateRequested = ['stable', ...prereleaseChannels].some(
+    const channelUpdateRequested = ['stable', ...PRERELEASE_CHANNELS].some(
       (c) => args.version === c,
     );
 
@@ -54,12 +80,6 @@ export default class UseCommand extends UpdateCommand {
     await this.ensureClientDir();
     this.debug(`Looking for locally installed versions at ${this.clientRoot}`);
 
-    // Do not show known non-local version folder names, bin and current.
-    const versions = fs
-      .readdirSync(this.clientRoot)
-      .filter((dirOrFile) => dirOrFile !== 'bin' && dirOrFile !== 'current');
-    if (versions.length === 0)
-      throw new Error('No locally installed versions found.');
     const matchingLocalVersions = versions
       .filter((version) => {
         // - If the version contains 'partial', ignore it
@@ -68,7 +88,7 @@ export default class UseCommand extends UpdateCommand {
         }
         // - If we request stable, only provide standard versions...
         if (this.channel === 'stable') {
-          return !prereleaseChannels.some((c) => version.includes(c));
+          return !PRERELEASE_CHANNELS.some((c) => version.includes(c));
         }
         // - ... otherwise check if the version is contained
         return version.includes(targetVersion);
