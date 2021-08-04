@@ -10,8 +10,13 @@ import * as path from 'path';
 
 import { extract } from '../tar';
 import { ls, wait } from '../util';
-
+import * as Config from '@oclif/config';
+interface ConfigWithId extends Config.IConfig {
+  commandId: string;
+}
 export default class UpdateCommand extends Command {
+  config!: ConfigWithId;
+
   static description =
     'update the <%= config.bin %> CLI. This will download a new binary';
 
@@ -51,6 +56,8 @@ export default class UpdateCommand extends Command {
 
   async run() {
     const { args, flags } = this.parse(UpdateCommand);
+    // pass command id to config
+    this.config.commandId = this.id || 'none';
     this.autoupdate = Boolean(flags.autoupdate);
 
     if (this.autoupdate) await this.debounce();
@@ -108,7 +115,9 @@ export default class UpdateCommand extends Command {
       else await this.update(manifest);
       this.debug('tidy');
       await this.tidy();
-      await this.config.runHook('update', { channel: this.channel });
+      await this.config.runHook('update', {
+        channel: this.channel,
+      });
     }
 
     this.debug('done');
