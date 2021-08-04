@@ -147,6 +147,54 @@ describe('Use Command', () => {
     );
   });
 
+  it('will appropriately choose the latest minor from stable channel', async () => {
+    mockFs.readdirSync.mockReturnValue([
+      '1.0.0-next.2',
+      '1.0.0-next.3',
+      '1.0.1',
+      '2.1.0',
+      '2.2.0',
+      '2.1.5',
+      '2.1.3',
+    ] as any);
+
+    // oclif-example use 2.1
+    commandInstance = new MockedUseCommand(['2.1'], config);
+
+    commandInstance.fetchManifest.mockResolvedValue({
+      channel: 'stable',
+    } as IManifest);
+
+    await commandInstance.run();
+
+    expect(commandInstance.downloadAndExtract).not.toBeCalled();
+    expect(commandInstance.updatedVersion).toBe('2.1.5');
+  });
+
+  it('will appropriately choose the latest major from stable channel', async () => {
+    mockFs.readdirSync.mockReturnValue([
+      '1.0.0-next.2',
+      '1.0.0-next.3',
+      '1.0.1',
+      '2.1.0',
+      '2.2.0',
+      '2.1.5',
+      '2.1.3',
+    ] as any);
+
+    // oclif-example use 2.1
+    commandInstance = new MockedUseCommand(['2'], config);
+
+    commandInstance.fetchManifest.mockResolvedValue({
+      channel: 'stable',
+    } as IManifest);
+
+    await commandInstance.run();
+
+    expect(commandInstance.downloadAndExtract).not.toBeCalled();
+    expect(commandInstance.updatedVersion).toBe('2.2.0');
+  });
+
   it('will ignore partials when trying to update to stable', async () => {
     mockFs.readdirSync.mockReturnValue([
       '1.0.0-next.2',
