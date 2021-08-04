@@ -1,11 +1,13 @@
 import cli from 'cli-ux';
 import * as fs from 'fs-extra';
 import * as semver from 'semver';
+import {
+  EXTENDED_SEMVER_REGEX,
+  FUZZY_SEMVER_REGEX,
+  getMatchingVersions,
+} from '../utils/version-calculation';
 
 import UpdateCommand from './update';
-
-const SEMVER_REGEX =
-  /^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?/;
 
 export default class UseCommand extends UpdateCommand {
   static description =
@@ -27,7 +29,9 @@ export default class UseCommand extends UpdateCommand {
 
     // Check if this command is trying to update the channel. TODO: make this dynamic
     const prereleaseChannels = ['alpha', 'beta', 'next'];
-    const isExplicitVersion = SEMVER_REGEX.test(args.version || '');
+    const isExplicitVersion =
+      EXTENDED_SEMVER_REGEX.test(args.version || '') ||
+      FUZZY_SEMVER_REGEX.test(args.version || '');
     const channelUpdateRequested = ['stable', ...prereleaseChannels].some(
       (c) => args.version === c,
     );
@@ -58,22 +62,18 @@ export default class UseCommand extends UpdateCommand {
     const versions = fs
       .readdirSync(this.clientRoot)
       .filter((dirOrFile) => dirOrFile !== 'bin' && dirOrFile !== 'current');
+
+    // Back out if no local versions are found
     if (versions.length === 0)
       throw new Error('No locally installed versions found.');
-    const matchingLocalVersions = versions
-      .filter((version) => {
-        // - If the version contains 'partial', ignore it
-        if (version.includes('partial')) {
-          return false;
-        }
-        // - If we request stable, only provide standard versions...
-        if (this.channel === 'stable') {
-          return !prereleaseChannels.some((c) => version.includes(c));
-        }
-        // - ... otherwise check if the version is contained
-        return version.includes(targetVersion);
-      })
-      .sort((a, b) => semver.compare(b, a));
+
+    // Get matching versions
+    const matchingLocalVersions = await getMatchingVersions(
+      versions,
+      targetVersion,
+      this.channel,
+      prereleaseChannels,
+    );
 
     if (
       args.version &&
