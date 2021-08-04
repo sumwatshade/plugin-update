@@ -13,14 +13,14 @@ import { ls, wait } from '../util';
 
 export default class UpdateCommand extends Command {
   static description =
-    'update the <%= config.bin %> CLI. This will download a new binary';
+    'Updates the <%= config.bin %> CLI. This will check for the latest version available on the requested channel and fetch it from remote';
 
   static args = [
     {
       name: 'channel', // name of arg to show in help and reference with args[name]
       required: false, // make the arg required with `required: true`
       description:
-        'Specify a prerelease channel. An error will be thrown if this channel is invalid.', // help description
+        'Specify a channel (ex: stable,alpha,beta,next). An error will be thrown if this channel is invalid.', // help description
     },
   ];
 
