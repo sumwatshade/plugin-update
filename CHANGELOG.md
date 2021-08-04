@@ -1,3 +1,15 @@
+# [1.9.0](https://github.com/sumwatshade/plugin-update/compare/v1.8.6...v1.9.0) (2021-08-04)
+
+
+### Bug Fixes
+
+* small tweak ([70e7674](https://github.com/sumwatshade/plugin-update/commit/70e76746568674fc343e47dcf275ac9cdc5c1f48))
+
+
+### Features
+
+* provide major versions ([9ac3c71](https://github.com/sumwatshade/plugin-update/commit/9ac3c7172a57168899e05fca802ff54599fa031a))
+
 ## [1.8.6](https://github.com/sumwatshade/plugin-update/compare/v1.8.5...v1.8.6) (2021-06-24)
 
 

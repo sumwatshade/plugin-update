@@ -32,24 +32,24 @@ ARGUMENTS
   VERSION  Specify an explicit version (ex. 3.0.0-next.1) or a channel (ex. alpha)
 ```
 
-_See code: [src/commands/install.ts](https://github.com/sumwatshade/plugin-update/blob/v1.8.6/src/commands/install.ts)_
+_See code: [src/commands/install.ts](https://github.com/sumwatshade/plugin-update/blob/v1.9.0/src/commands/install.ts)_
 
 ## `oclif-example update [CHANNEL]`
 
-update the oclif-example CLI. This will download a new binary
+Updates the oclif-example CLI. This will check for the latest version available on the requested channel and fetch it from remote
 
 ```
 USAGE
   $ oclif-example update [CHANNEL]
 
 ARGUMENTS
-  CHANNEL  Specify a prerelease channel. An error will be thrown if this channel is invalid.
+  CHANNEL  Specify a channel (ex: stable,alpha,beta,next). An error will be thrown if this channel is invalid.
 
 OPTIONS
   --from-local  interactively choose an already installed version
 ```
 
-_See code: [src/commands/update.ts](https://github.com/sumwatshade/plugin-update/blob/v1.8.6/src/commands/update.ts)_
+_See code: [src/commands/update.ts](https://github.com/sumwatshade/plugin-update/blob/v1.9.0/src/commands/update.ts)_
 
 ## `oclif-example use [VERSION]`
 
@@ -63,5 +63,5 @@ ARGUMENTS
   VERSION  Specify an explicit version (ex. 3.0.0-next.1) or a channel (ex. alpha)
 ```
 
-_See code: [src/commands/use.ts](https://github.com/sumwatshade/plugin-update/blob/v1.8.6/src/commands/use.ts)_
+_See code: [src/commands/use.ts](https://github.com/sumwatshade/plugin-update/blob/v1.9.0/src/commands/use.ts)_
 <!-- commandsstop -->
