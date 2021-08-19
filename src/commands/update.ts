@@ -10,6 +10,7 @@ import * as path from 'path';
 
 import { extract } from '../tar';
 import { ls, wait } from '../util';
+import { isSemverAlias } from '../utils/version-calculation';
 
 export default class UpdateCommand extends Command {
   static description =
@@ -56,6 +57,12 @@ export default class UpdateCommand extends Command {
     if (this.autoupdate) await this.debounce();
 
     this.channel = args.channel || (await this.determineChannel());
+
+    if (await isSemverAlias(this.channel)) {
+      throw new Error(
+        `We do not yet support major/minor aliases with the update command. Please refer to this issue for updates on the enhancement: https://github.com/sumwatshade/plugin-update/issues/32`,
+      );
+    }
 
     if (flags['from-local']) {
       await this.ensureClientDir();

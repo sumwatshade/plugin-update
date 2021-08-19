@@ -1,11 +1,10 @@
 import cli from 'cli-ux';
 import * as semver from 'semver';
 import * as fs from 'fs-extra';
+import { isAnySemver, isSemverAlias } from '../utils/version-calculation';
 
 import UpdateCommand from './update';
 
-const SEMVER_REGEX =
-  /^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?/;
 export default class InstallCommand extends UpdateCommand {
   static description =
     'Install and link a new version of the <%= config.bin %> CLI. This will first check locally before fetching from the internet';
@@ -26,12 +25,20 @@ export default class InstallCommand extends UpdateCommand {
 
     // Check if this command is trying to update the channel. TODO: make this dynamic
     const prereleaseChannels = ['alpha', 'beta', 'next'];
-    const isExplicitVersion = SEMVER_REGEX.test(args.version || '');
+
+    if (await isSemverAlias(args.version ?? '')) {
+      throw new Error(
+        `We do not yet support major/minor aliases with the install command. Please refer to this issue for updates: https://github.com/sumwatshade/plugin-update/issues/32`,
+      );
+    }
+
+    const isArgSemver = await isAnySemver(args.version ?? '');
+
     const channelUpdateRequested = ['stable', ...prereleaseChannels].some(
       (c) => args.version === c,
     );
 
-    if (!isExplicitVersion && !channelUpdateRequested) {
+    if (!isArgSemver && !channelUpdateRequested) {
       throw new Error(
         `Invalid argument provided: ${args.version}. Please specify either a valid channel (alpha, beta, next, stable) or an explicit version (ex. 2.68.13)`,
       );
@@ -42,6 +49,7 @@ export default class InstallCommand extends UpdateCommand {
       : await this.determineChannel();
 
     const targetVersion = semver.clean(args.version) || args.version;
+
     // Determine if the version is from a different channel and update to account for it (ex. cli-example update 3.0.0-next.22 should update the channel to next as well.)
     const versionParts = targetVersion?.split('-') || ['', ''];
     if (versionParts && versionParts[1]) {
@@ -69,7 +77,7 @@ export default class InstallCommand extends UpdateCommand {
       }
       this.log(`Success! You are now on ${targetVersion}!`);
     } else {
-      const explicitVersion = isExplicitVersion ? targetVersion : null;
+      const explicitVersion = isArgSemver ? targetVersion : null;
       cli.action.start(`${this.config.name}: Updating CLI`);
       await this.config.runHook('preupdate', { channel: this.channel });
       const manifest = await this.fetchManifest();

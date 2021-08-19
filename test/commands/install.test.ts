@@ -140,6 +140,24 @@ describe('Install Command', () => {
     expect(err.message).toBe('unable to find version');
   });
 
+  it('will warn and exit if an alias is used', async () => {
+    config.pjson.oclif.update.s3.host = 'https://test-cli-oclif.com/';
+    mockFs.readdirSync.mockReturnValue([] as any);
+    commandInstance = new MockedInstallCommand(['2'], config);
+
+    let err;
+
+    try {
+      await commandInstance.run();
+    } catch (error) {
+      err = error;
+    }
+
+    expect(err.message).toBe(
+      `We do not yet support major/minor aliases with the install command. Please refer to this issue for updates: https://github.com/sumwatshade/plugin-update/issues/32`,
+    );
+  });
+
   it('will handle an invalid channel request', async () => {
     config.pjson.oclif.update.s3.host = 'https://test-cli-oclif.com/';
     mockFs.readdirSync.mockReturnValue([] as any);
