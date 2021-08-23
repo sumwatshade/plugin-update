@@ -1,11 +1,7 @@
 import cli from 'cli-ux';
 import * as fs from 'fs-extra';
 import * as semver from 'semver';
-import {
-  EXTENDED_SEMVER_REGEX,
-  FUZZY_SEMVER_REGEX,
-  getMatchingVersions,
-} from '../utils/version-calculation';
+import { getMatchingVersions, isAnySemver } from '../utils/version-calculation';
 
 import UpdateCommand from './update';
 
@@ -29,14 +25,12 @@ export default class UseCommand extends UpdateCommand {
 
     // Check if this command is trying to update the channel. TODO: make this dynamic
     const prereleaseChannels = ['alpha', 'beta', 'next'];
-    const isExplicitVersion =
-      EXTENDED_SEMVER_REGEX.test(args.version || '') ||
-      FUZZY_SEMVER_REGEX.test(args.version || '');
+    const isArgSemver = await isAnySemver(args.version ?? '');
     const channelUpdateRequested = ['stable', ...prereleaseChannels].some(
       (c) => args.version === c,
     );
 
-    if (!isExplicitVersion && !channelUpdateRequested) {
+    if (!isArgSemver && !channelUpdateRequested) {
       throw new Error(
         `Invalid argument provided: ${args.version}. Please specify either a valid channel (alpha, beta, next, stable) or an explicit version (ex. 2.68.13)`,
       );
