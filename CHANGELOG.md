@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/sumwatshade/plugin-update/compare/v1.9.0...v1.9.1) (2021-08-23)
+
+
+### Bug Fixes
+
+* code organization and prep for requests around installation aliases ([1c7791d](https://github.com/sumwatshade/plugin-update/commit/1c7791d65823b87c1b3e6ae10099a403f0aab9b6))
+
 # [1.9.0](https://github.com/sumwatshade/plugin-update/compare/v1.8.6...v1.9.0) (2021-08-04)
 
 
