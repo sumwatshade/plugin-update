@@ -71,9 +71,15 @@ export default class UpdateCommand extends Command {
       );
 
       // Do not show known non-local version folder names, bin and current.
-      const versions = fs
-        .readdirSync(this.clientRoot)
-        .filter((dirOrFile) => dirOrFile !== 'bin' && dirOrFile !== 'current');
+      let versions: string[] = [];
+      try {
+        versions = fs
+          .readdirSync(this.clientRoot)
+          .filter(
+            (dirOrFile) => dirOrFile !== 'bin' && dirOrFile !== 'current',
+          );
+      } catch {}
+
       if (versions.length === 0)
         throw new Error('No locally installed versions found.');
 

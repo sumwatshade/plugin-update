@@ -60,9 +60,12 @@ export default class InstallCommand extends UpdateCommand {
       this.channel = 'stable';
     }
 
-    const versions = fs
-      .readdirSync(this.clientRoot)
-      .filter((dirOrFile) => dirOrFile !== 'bin' && dirOrFile !== 'current');
+    let versions: string[] = [];
+    try {
+      versions = fs
+        .readdirSync(this.clientRoot)
+        .filter((dirOrFile) => dirOrFile !== 'bin' && dirOrFile !== 'current');
+    } catch {}
 
     if (versions.includes(targetVersion)) {
       this.log(
