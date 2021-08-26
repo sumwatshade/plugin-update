@@ -53,9 +53,12 @@ export default class UseCommand extends UpdateCommand {
     this.debug(`Looking for locally installed versions at ${this.clientRoot}`);
 
     // Do not show known non-local version folder names, bin and current.
-    const versions = fs
-      .readdirSync(this.clientRoot)
-      .filter((dirOrFile) => dirOrFile !== 'bin' && dirOrFile !== 'current');
+    let versions: string[] = [];
+    try {
+      versions = fs
+        .readdirSync(this.clientRoot)
+        .filter((dirOrFile) => dirOrFile !== 'bin' && dirOrFile !== 'current');
+    } catch {}
 
     // Back out if no local versions are found
     if (versions.length === 0)
