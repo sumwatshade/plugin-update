@@ -1,3 +1,10 @@
+## [1.9.2](https://github.com/sumwatshade/plugin-update/compare/v1.9.1...v1.9.2) (2021-08-26)
+
+
+### Bug Fixes
+
+* null checking on client root ([fed04a3](https://github.com/sumwatshade/plugin-update/commit/fed04a39a58f86c0ee69b8626b57b67f61c1816b))
+
 ## [1.9.1](https://github.com/sumwatshade/plugin-update/compare/v1.9.0...v1.9.1) (2021-08-23)
 
 
