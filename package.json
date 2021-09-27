@@ -54,7 +54,7 @@
     "typescript": "4.1.3"
   },
   "engines": {
-    "node": ">=10.0.0"
+    "node": "^10.13.0 || ^12.13.0 || ^14.15"
   },
   "resolutions": {
     "@semantic-release/changelog": "5.0.1",
