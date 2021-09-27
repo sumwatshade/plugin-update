@@ -1,9 +1,11 @@
-name: PR Merge Verification
+# This is a basic workflow to help you get started with Actions
+
+name: Release with Testing
 
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
-  pull_request:
+  push:
     branches: [ master ]
 
   # Allows you to run this workflow manually from the Actions tab
@@ -12,13 +14,13 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  release:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x, 16.x]
+        node-version: [15.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -38,9 +40,12 @@ jobs:
           ${{ runner.OS }}-
     - name: Install Dependencies
       run: yarn install --frozen-lockfile
-    - name: Lint files
-      run: yarn lint
     - name: Generate assets
       run: yarn build
-    - name: Test
-      run: yarn test
+    - name: Release
+      env: 
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      run: |
+        git fetch --tags
+        yarn semantic-release -e @oclif/semantic-release
