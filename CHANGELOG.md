@@ -1,3 +1,11 @@
+## [1.9.4](https://github.com/sumwatshade/plugin-update/compare/v1.9.3...v1.9.4) (2021-09-27)
+
+
+### Bug Fixes
+
+* use 14 for publish ([a74451d](https://github.com/sumwatshade/plugin-update/commit/a74451d67417ad64a52578f0128c14b3fcb605a6))
+* work in node 10 ([#38](https://github.com/sumwatshade/plugin-update/issues/38)) ([1b01541](https://github.com/sumwatshade/plugin-update/commit/1b01541d0464b0d37f694f2b1bb98610c651ab5e))
+
 ## [1.9.3](https://github.com/sumwatshade/plugin-update/compare/v1.9.2...v1.9.3) (2021-09-27)
 
 
