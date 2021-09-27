@@ -38,9 +38,9 @@ jobs:
           ${{ runner.OS }}-
     - name: Install Dependencies
       run: yarn install --frozen-lockfile
-    - name: Lint files
-      run: yarn lint
     - name: Generate assets
       run: yarn build
+    - name: Lint files
+      run: yarn lint
     - name: Test
       run: yarn test
