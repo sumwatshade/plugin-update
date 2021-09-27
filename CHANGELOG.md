@@ -1,3 +1,12 @@
+## [1.9.3](https://github.com/sumwatshade/plugin-update/compare/v1.9.2...v1.9.3) (2021-09-27)
+
+
+### Bug Fixes
+
+* deps and build ([b6cbc15](https://github.com/sumwatshade/plugin-update/commit/b6cbc158b12e72c883d88a6598ee66af8557fe40))
+* node 10 in prs ([a6e1094](https://github.com/sumwatshade/plugin-update/commit/a6e1094fc5d190ec2dc4b98458344304363d139d))
+* use github actions ([7a92029](https://github.com/sumwatshade/plugin-update/commit/7a920299e9f5387a1dca562dde50ea071b0a58df))
+
 ## [1.9.2](https://github.com/sumwatshade/plugin-update/compare/v1.9.1...v1.9.2) (2021-08-26)
 
 
