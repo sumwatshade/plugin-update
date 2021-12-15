@@ -91,9 +91,9 @@
     "lint": "eslint . --ext .ts --config .eslintrc.js",
     "test": "jest",
     "posttest": "yarn lint",
-    "prepack": "yarn build && oclif-dev manifest",
+    "prepack": "rm -rf lib && yarn build && oclif-dev manifest",
     "postpack": "rm -f oclif.manifest.json",
     "version": "oclif-dev readme && git add README.md",
-    "build": "rm -rf lib && tsc"
+    "build": "tsc"
   }
 }

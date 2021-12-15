@@ -1,19 +1,37 @@
-# @sumwatshade/oclif-plugin-update
+<!-- Project Logo and Title -->
+<p align="center">
+  <a href="#">
+    <img src=".github/assets/logo.png" alt="Logo" width="80" height="80">
+  </a>
 
-====================
+  <h3 align="center">@sumwatshade/oclif-plugin-update</h3>
+</p>
 
-> A fork of @oclif/plugin-update that closer mimics [NVM](https://github.com/nvm-sh/nvm)
 
-[![Version](https://img.shields.io/npm/v/@oclif/plugin-update.svg)](https://npmjs.org/package/@sumwatshade/oclif-plugin-update)
-[![CircleCI](https://circleci.com/gh/oclif/plugin-update/tree/master.svg?style=shield)](https://circleci.com/gh/sumwatshade/plugin-update/tree/master)
-[![Downloads/week](https://img.shields.io/npm/dw/@oclif/plugin-update.svg)](https://npmjs.org/package/@sumwatshade/oclif-plugin-update)
-[![License](https://img.shields.io/npm/l/@oclif/plugin-update.svg)](https://github.com/sumwatshade/plugin-update/blob/master/package.json)
+A fork of @oclif/plugin-update that mimics an [NVM](https://github.com/nvm-sh/nvm)-like experience
 
-<!-- toc -->
-* [@sumwatshade/oclif-plugin-update](#sumwatshadeoclif-plugin-update)
-<!-- tocstop -->
+[![Version](https://img.shields.io/npm/v/@sumwatshade/oclif-plugin-update.svg)](https://npmjs.org/package/@sumwatshade/oclif-plugin-update)
+![CI Job](https://github.com/sumwatshade/plugin-update/actions/workflows/ci.yml/badge.svg)
+![Release Job](https://github.com/sumwatshade/plugin-update/actions/workflows/npm-publish.yml/badge.svg)
+[![Downloads/week](https://img.shields.io/npm/dw/@sumwatshade/oclif-plugin-update.svg)](https://npmjs.org/package/@sumwatshade/oclif-plugin-update)
+[![License](https://img.shields.io/npm/l/@sumwatshade/oclif-plugin-update.svg)](https://github.com/sumwatshade/plugin-update/blob/master/package.json)
 
-## Commands
+<details open="open">
+  <summary>Table of Contents</summary>
+  <ol>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+  </ol>
+</details>
+
+## Features
+
+- Quickly switch between different versions of your CLI
+- Request explicit installation of a particular version of the tool
+- Will use the nearest major/minor/patch based on semantic versioning (ex. `use 3.1` will resolve to latest patch version `3.1.x` available locally)
+
+## Usage
 
 <!-- commands -->
 * [`oclif-example install VERSION`](#oclif-example-install-version)
@@ -65,3 +83,7 @@ ARGUMENTS
 
 _See code: [src/commands/use.ts](https://github.com/sumwatshade/plugin-update/blob/v1.9.4/src/commands/use.ts)_
 <!-- commandsstop -->
+
+## Contributing
+
+Contributions are welcome, please see the [CONTRIBUTING.md](CONTRIBUTING.md) for details.
